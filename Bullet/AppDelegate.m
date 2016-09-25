@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "BTSignInViewController.h"
 
 @interface AppDelegate ()
 
@@ -16,9 +17,53 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    //1.主窗口
+    self.window = [[UIWindow alloc] init];
+    self.window.frame = [[UIScreen mainScreen] bounds];
+    [self.window makeKeyAndVisible];
+    [Bmob registerWithAppKey:@"54418c45f9c12443dc06cf3c4cf4514b"];
+    //2.检测用户是否已登录
+    if ([BmobUser currentUser]) {
+            //加载KindleAssistant控制器
+        
+        //检测网络
+        [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+        
+        //加载单项控制器
+        BTKindleAssistantViewController *kdVC = [[BTKindleAssistantViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        UINavigationController *kindleAssiantVCNAV = [[UINavigationController alloc] initWithRootViewController:kdVC];
+        
+        UIStoryboard *signInAndUpSB = [UIStoryboard storyboardWithName:@"BTSignInAndUpStoryboard" bundle:nil];
+        BTProfileViewController *profileVC = [signInAndUpSB instantiateViewControllerWithIdentifier:@"profile"];
+        
+        self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:kindleAssiantVCNAV leftDrawerViewController:profileVC];
+        [self.drawerController setShowsShadow:YES]; // 是否显示阴影效果
+        self.drawerController.maximumLeftDrawerWidth = [UIScreen mainScreen].bounds.size.width * 3/4; // 左边拉开的最大宽度
+        [self.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+        [self.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+        
+        self.window.backgroundColor = [UIColor whiteColor];
+        self.window.rootViewController = self.drawerController;
+
+    }else{
+        //加载登录注册界面
+        UIStoryboard *signInAndUpSB = [UIStoryboard storyboardWithName:@"BTSignInAndUpStoryboard" bundle:nil];
+        BTSignInViewController *signInVC = signInAndUpSB.instantiateInitialViewController;
+        self.window.rootViewController = signInVC;
+        
+       
+    }
+   
+    
+    
+
+    
+    
     return YES;
 }
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
