@@ -18,32 +18,37 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //检测网络
+        [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    });
+    
+    
     //1.主窗口
     self.window = [[UIWindow alloc] init];
     self.window.frame = [[UIScreen mainScreen] bounds];
     [self.window makeKeyAndVisible];
     [Bmob registerWithAppKey:@"54418c45f9c12443dc06cf3c4cf4514b"];
+    
+
+    
     //2.检测用户是否已登录
     if ([BmobUser currentUser]) {
             //加载KindleAssistant控制器
-        
-        //检测网络
-        [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-        
         //加载单项控制器
-        BTKindleAssistantViewController *kdVC = [[BTKindleAssistantViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        UINavigationController *kindleAssiantVCNAV = [[UINavigationController alloc] initWithRootViewController:kdVC];
+        BTKindleAssistantFatherViewController *fatherVC = [[BTKindleAssistantFatherViewController alloc]init];
         
         UIStoryboard *signInAndUpSB = [UIStoryboard storyboardWithName:@"BTSignInAndUpStoryboard" bundle:nil];
         BTProfileViewController *profileVC = [signInAndUpSB instantiateViewControllerWithIdentifier:@"profile"];
         
-        self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:kindleAssiantVCNAV leftDrawerViewController:profileVC];
+        self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:fatherVC leftDrawerViewController:profileVC];
+        self.drawerController.view.backgroundColor = [UIColor whiteColor];
         [self.drawerController setShowsShadow:YES]; // 是否显示阴影效果
-        self.drawerController.maximumLeftDrawerWidth = [UIScreen mainScreen].bounds.size.width * 3/4; // 左边拉开的最大宽度
+        self.drawerController.maximumLeftDrawerWidth = UIScreenWidth * 7/8; // 左边拉开的最大宽度
         [self.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
         [self.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
-        
         self.window.backgroundColor = [UIColor whiteColor];
+        
         self.window.rootViewController = self.drawerController;
 
     }else{

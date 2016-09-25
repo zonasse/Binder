@@ -13,8 +13,7 @@
 
 typedef enum btBookDownloadStatus
 {
-    btBookStatusDownloaded = 2,//已经下载
-    btBookStatusDownloading = 1,//下载挂起
+    btBookStatusDownloaded = 1,//已经下载
     btBookStatusNone = 0//没有下载
     
 }btBookStatus;

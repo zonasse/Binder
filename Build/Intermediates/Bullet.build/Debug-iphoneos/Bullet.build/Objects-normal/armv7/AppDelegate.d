@@ -1,3 +1,1 @@
-dependencies: /Users/Jaccob/Documents/Bullet/Bullet/AppDelegate.m \
-  /Users/Jaccob/Documents/Bullet/Bullet/Classes/Main/Controller/BTTabBarViewController.h \
-  /Users/Jaccob/Documents/Bullet/Bullet/Classes/Main/Controller/BTSignInViewController.h
+dependencies: /Users/Jaccob/Documents/Bullet/Bullet/AppDelegate.m

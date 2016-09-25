@@ -7,12 +7,7 @@
 //
 
 #import "BTKindleBookCell.h"
-#import "Masonry.h"
-#import "UIView+extension.h"
-#import "AFNetworking.h"
 #import <MessageUI/MFMessageComposeViewController.h>
-#import "UIImageView+WebCache.h"
-#import "ASProgressPopUpView.h"
 @interface BTKindleBookCell ()<ASProgressPopUpViewDataSource,UIAlertViewDelegate>
 //cell内部子控件
 @property(nonatomic,strong)UIImageView *replaceContentView;
@@ -25,7 +20,11 @@
 @property(nonatomic,strong)UILabel *bookPublishTimeLabel;
 @property(nonatomic,strong)UIButton *bookSendToKindleButton;
 @property(nonatomic,strong)UIButton *downloadButton;
+@property (nonatomic,strong) UIView *hideView;
 @property (nonatomic,strong) ASProgressPopUpView *progressView;
+@property (nonatomic,strong) UIButton *cancelDownloadButton;
+
+
 @property (nonatomic,strong) NSURLSessionDownloadTask *downloadTask;
 
 @end
@@ -35,6 +34,9 @@
 - (void)setBook:(BTBook *)book
 {
     _book = book;
+    
+
+    
     NSString *baseImageURL =[NSString stringWithFormat:@"http://172.18.96.73:8888%@",_book.cover];
     baseImageURL = [baseImageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
@@ -68,19 +70,9 @@
 
         [_downloadButton setBackgroundImage:[UIImage imageNamed:@"buttonNormal"] forState:UIControlStateNormal];
         [_downloadButton setBackgroundImage:[UIImage imageNamed:@"buttonHighlighted"] forState:UIControlStateHighlighted];
-       
-       
-        [_progressView setProgress:1.0];
-        
-    }else if(_book.bookStatus == btBookStatusDownloading){
-        [_downloadButton setTitle:@"取消下载" forState:UIControlStateNormal];
-        [_downloadButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        
-        [_downloadButton setBackgroundImage:[UIImage imageNamed:@"buttonNormal"] forState:UIControlStateNormal];
-        [_downloadButton setBackgroundImage:[UIImage imageNamed:@"buttonDown"] forState:UIControlStateHighlighted];
-
-        
+    
     }else if(_book.bookStatus == btBookStatusNone){
+        [_progressView setProgress:0.0];
         //没有下载
         [_downloadButton setTitle:@"下载" forState:UIControlStateNormal];
         [_downloadButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -215,22 +207,8 @@
         }];
         
         
-        //创建下载进度条
-        self.progressView = [[ASProgressPopUpView alloc] init];
+       
         
-        self.progressView.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:8];
-        self.progressView.popUpViewAnimatedColors = @[[UIColor redColor], [UIColor greenColor],[UIColor colorWithRed:247/255.0 green:202/255.0 blue:142/255.0 alpha:1.0]];
-        self.progressView.dataSource = self;
-        [self.progressView hidePopUpViewAnimated:YES];
-
-        [_replaceContentView addSubview:self.progressView];
-        [self.progressView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_bookImageView.mas_bottom).with.offset(2);
-            make.right.equalTo(_replaceContentView.mas_right);
-            make.height.mas_equalTo(@5);
-            make.width.equalTo(_replaceContentView.mas_width);
-            
-        }];
        
 
         
@@ -260,7 +238,10 @@
             [[NSNotificationCenter defaultCenter]postNotificationName:@"openDownloadedBook" object:_book];
             
         }
+        break;
         case btBookStatusNone:{
+            
+            
             //监测网络
             [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
                 switch (status) {
@@ -280,9 +261,39 @@
                         break;
                 }
             }];
-            //从私人服务器下载
+         
             
-          //下载书籍
+            //进度条蒙版
+            _hideView = [[UIView alloc ] initWithFrame:CGRectMake(0, 0, UIScreenWidth, self.replaceContentView.height)];
+            _hideView.backgroundColor = [UIColor blackColor];
+            _hideView.alpha = 0.5;
+            
+            //创建下载进度条
+            self.progressView = [[ASProgressPopUpView alloc] init];
+            [self.progressView showPopUpViewAnimated:YES];
+            self.progressView.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:16];
+            [self.progressView setPopUpViewAnimatedColors:@[[UIColor yellowColor],[UIColor greenColor],[UIColor orangeColor]]];
+            self.progressView.frame = CGRectMake(0, self.contentView.bounds.size.height * 0.5, UIScreenWidth - 60, 2);
+            
+            //创建取消按钮
+            _cancelDownloadButton = [[UIButton alloc] init];
+            _cancelDownloadButton.center = CGPointMake(UIScreenWidth - 45 , 25);
+            _cancelDownloadButton.width = 34;
+            _cancelDownloadButton.height = 34;
+            [_cancelDownloadButton setImage:[UIImage imageNamed:@"list-cancel-badge"] forState:UIControlStateNormal];
+            [_cancelDownloadButton addTarget:self action:@selector(cancelDownloadTask) forControlEvents:UIControlEventTouchUpInside];
+            [_hideView addSubview:self.progressView];
+            [_hideView addSubview:self.cancelDownloadButton];
+            
+            [self.contentView addSubview:_hideView];
+
+            
+            //下载书籍
+            
+            if ([self.book.path length] > 25) {
+                self.book.path = [self.book.path substringFromIndex:25.0];
+            }
+            
             NSString *bookBaseURL = [NSString stringWithFormat:@"http://172.18.96.73:8888%@",self.book.path];
             bookBaseURL = [bookBaseURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSURL *bookRequestURL = [NSURL URLWithString:bookBaseURL];
@@ -293,14 +304,6 @@
 
         }
         break;
-            case btBookStatusDownloading:{
-                //取消下载
-                [self.downloadTask cancel];
-                [_downloadButton setTitle:@"下载" forState:UIControlStateNormal];
-                _book.bookStatus = btBookStatusNone;
-            
-        }
-        break;
     }
 
 }
@@ -309,6 +312,10 @@
 {
     if (buttonIndex == 1) {
         //下载书籍
+        if ([self.book.path length] > 25) {
+            self.book.path = [self.book.path substringFromIndex:25.0];
+        }
+        
         NSString *bookBaseURL = [NSString stringWithFormat:@"http://172.18.96.73:8888%@",self.book.path];
         bookBaseURL = [bookBaseURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *bookRequestURL = [NSURL URLWithString:bookBaseURL];
@@ -329,17 +336,25 @@
 - (void)downloadBookWithRequest:(NSURLRequest *)request
 {
    //下载对应书籍
+    
+    
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         self.downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
             
             //切换到主线程
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.progressView setProgress:downloadProgress.completedUnitCount/downloadProgress.totalUnitCount animated:YES] ;
+            });
                 //判断下载是否完成
                 NSLog(@"%f",1.0 *downloadProgress.completedUnitCount/downloadProgress.totalUnitCount);
                 if (downloadProgress.completedUnitCount/downloadProgress.totalUnitCount  == 1.0) {
+                    
+                    _cancelDownloadButton.enabled = NO;
+                   
+                    
                     //downloadedBook表添加项
                     
                     //将已下载的书籍数据加入本地数据库表
@@ -354,21 +369,20 @@
                             [db executeUpdate:sqlString];
                             BOOL result = [db executeUpdate:sqlString2];
                             if (result) {
+                                //关闭进度条
                                 
-                                [_downloadButton setTitle:@"打开" forState:UIControlStateNormal];
-                                _book.bookStatus = btBookStatusDownloaded;
+                                
+                                //切换到主线程
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    [_hideView removeFromSuperview];
+                                    [_downloadButton setTitle:@"打开" forState:UIControlStateNormal];
+                                    _book.bookStatus = btBookStatusDownloaded;
+                                });
                             }
-                            
                         }
-                        
                         [db close];
-                        
                     }];
-                }else{
-                    [_downloadButton setTitle:@"取消下载" forState:UIControlStateNormal];
-                    _book.bookStatus = btBookStatusDownloading;
                 }
-            });
             
         } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
             NSString *path = [downloadBookPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",self.book.title,self.book.suffix]];
@@ -382,9 +396,16 @@
         
         
  
-//    });
+    });
     
     
+    
+}
+
+- (void)cancelDownloadTask{
+    [self.downloadTask cancel];
+    _book.bookStatus = btBookStatusNone;
+    [_hideView removeFromSuperview];
     
 }
 

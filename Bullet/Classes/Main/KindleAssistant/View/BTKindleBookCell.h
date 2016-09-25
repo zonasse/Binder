@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BTBook.h"
+
 @interface BTKindleBookCell : UITableViewCell
 
 + (instancetype)cellWithTableView:(UITableView *)tableView andIdentifier:(NSString *)identifier;

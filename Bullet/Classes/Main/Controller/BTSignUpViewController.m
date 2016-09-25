@@ -7,8 +7,6 @@
 //  注册界面
 
 #import "BTSignUpViewController.h"
-#import "BTTabBarViewController.h"
-#import "BTVerifyEmailViewController.h"
 @interface BTSignUpViewController ()
 - (IBAction)cancelButton:(UIButton *)sender;
 
@@ -45,6 +43,12 @@
 
 - (IBAction)signUpButton:(id)sender {
     
+    if(kNetworkNotReachability)
+    {
+        [MBProgressHUD showError:@"当前网络故障，请重试"];
+        return;
+    }
+    
     if ( !self.passwordTextField.text.length || !self.emailTextField.text.length) {
         [MBProgressHUD showError:@"邮箱或密码不能为空"];
         return;
@@ -78,6 +82,14 @@
     [self.user setUsername:self.emailTextField.text];
     [self.user setPassword:self.passwordTextField.text];
     [self.user setEmail:self.emailTextField.text];
+    
+    
+    [self.emailTextField.text enumerateSubstringsInRange:NSMakeRange(0, self.emailTextField.text.length) options:NSStringEnumerationByWords usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop) {
+        
+        [self.user setObject:[NSString stringWithFormat:@"%@@kindle.cn",substring] forKey:@"kindleEmail"];
+        *stop = YES;
+    }];
+    
     [MBProgressHUD showMessage:@"处理中..."];
 
     

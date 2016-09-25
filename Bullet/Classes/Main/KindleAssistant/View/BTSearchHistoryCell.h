@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol BTSearchHistoryCellDelegate <NSObject>
+
+- (void)deleteHistoryCellWithTag:(NSUInteger)tag;
+
+@end
+
 @interface BTSearchHistoryCell : UITableViewCell
++ (instancetype)cellWithTableView:(UITableView *)tableView andIdentifier:(NSString *)identifier;
+@property (nonatomic,strong) NSString *historyName;
+@property (nonatomic,assign) id<BTSearchHistoryCellDelegate> delegate;
+
 
 @end

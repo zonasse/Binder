@@ -7,7 +7,6 @@
 //
 
 #import "BTVerifyEmailViewController.h"
-#import "BTTabBarViewController.h"
 @interface BTVerifyEmailViewController ()
 
 @property (nonatomic,weak) IBOutlet UILabel *informLabel;
@@ -63,6 +62,11 @@
 - (void)resendEmail
 {
     
+    if(kNetworkNotReachability)
+    {
+        [MBProgressHUD showError:@"当前网络故障，请重试"];
+        return;
+    }
     __unsafe_unretained typeof (self)weakSelf = self;
     [MBProgressHUD showMessage:@"处理中..."];
     [_user verifyEmailInBackgroundWithEmailAddress:_user.email block:^(BOOL isSuccessful, NSError *error) {
@@ -88,26 +92,35 @@
 
 - (void)verifiedEmail
 {
+    
+    if(kNetworkNotReachability)
+    {
+        [MBProgressHUD showError:@"当前网络故障，请重试"];
+        return;
+    }
+    
     [MBProgressHUD showMessage:@"处理中..."];
    [_user userEmailVerified:^(BOOL isSuccessful, NSError *error) {
        if (isSuccessful) {
            [MBProgressHUD hideHUD];
            [MBProgressHUD showSuccess:@"注册成功"];
-           
-           
-           //检测网络
-           [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-           
-           //加载单项控制器
-           BTKindleAssistantViewController *kdVC = [[BTKindleAssistantViewController alloc] initWithStyle:UITableViewStyleGrouped];
-           UINavigationController *kindleAssiantVCNAV = [[UINavigationController alloc] initWithRootViewController:kdVC];
+          
+           BTKindleAssistantFatherViewController *fatherVC = [[BTKindleAssistantFatherViewController alloc]init];
+
            
            UIStoryboard *signInAndUpSB = [UIStoryboard storyboardWithName:@"BTSignInAndUpStoryboard" bundle:nil];
            BTProfileViewController *profileVC = [signInAndUpSB instantiateViewControllerWithIdentifier:@"profile"];
            
-           MMDrawerController *rootController = [[MMDrawerController alloc] initWithCenterViewController:kindleAssiantVCNAV leftDrawerViewController:profileVC];
-           
-           [UIApplication sharedApplication].keyWindow.rootViewController = rootController;
+           ShareApp.drawerController = [[MMDrawerController alloc] initWithCenterViewController:fatherVC leftDrawerViewController:profileVC];
+           ShareApp.drawerController.view.backgroundColor = [UIColor whiteColor];
+           [ShareApp.drawerController setShowsShadow:YES]; // 是否显示阴影效果
+           ShareApp.drawerController.maximumLeftDrawerWidth = UIScreenWidth * 7/8; // 左边拉开的最大宽度
+           [ShareApp.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+           [ShareApp.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+           [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor whiteColor];
+           //检测网络
+           [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+           [UIApplication sharedApplication].keyWindow.rootViewController = ShareApp.drawerController  ;
        }else{
            [MBProgressHUD hideHUD];
            [MBProgressHUD showError:@"尚未收到激活信息，请稍后重试"];

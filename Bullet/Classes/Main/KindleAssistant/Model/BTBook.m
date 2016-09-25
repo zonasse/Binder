@@ -26,11 +26,9 @@
         
         
         self.suffix = dict[@"bt_suffix"];
-        if ([dict[@"bt_path"] length] > 25) {
-        self.path = [dict[@"bt_path"] substringFromIndex:25.0];
-        }else{
-            self.path = dict[@"bt_path"];
-        }
+      
+        self.path = dict[@"bt_path"];
+    
         self.publisher = dict[@"bt_publisher"];
         self.publishTime = [dict[@"bt_publish_time"] substringToIndex:10.0];
         self.category = dict[@"bt_category"];

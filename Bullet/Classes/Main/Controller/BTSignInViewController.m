@@ -7,7 +7,7 @@
 //  登录界面
 
 #import "BTSignInViewController.h"
-#import "BTTabBarViewController.h"
+
 @interface BTSignInViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
@@ -20,23 +20,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    //检测网络
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)signInButton:(id)sender {
     
@@ -44,34 +36,51 @@
         [MBProgressHUD showError:@"账号或密码不能为空"];
         return;
     }
+    
+    if (kNetworkNotReachability) {
+        [MBProgressHUD showError:@"网络故障，请重试"];
+        return;
+    }
+    
     [MBProgressHUD showMessage:@"登录中"];
     [BmobUser loginInbackgroundWithAccount:self.emailTextField.text andPassword:self.passwordTextField.text block:^(BmobUser *user, NSError *error) {
         if (user) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showSuccess:@"登陆成功"];
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{    
                 
-                
-                //检测网络
-                [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-                
+                //加载KindleAssistant控制器
                 //加载单项控制器
-                BTKindleAssistantViewController *kdVC = [[BTKindleAssistantViewController alloc] initWithStyle:UITableViewStyleGrouped];
-                UINavigationController *kindleAssiantVCNAV = [[UINavigationController alloc] initWithRootViewController:kdVC];
-                
+                 BTKindleAssistantFatherViewController *fatherVC = [[BTKindleAssistantFatherViewController alloc]init];
+
                 UIStoryboard *signInAndUpSB = [UIStoryboard storyboardWithName:@"BTSignInAndUpStoryboard" bundle:nil];
                 BTProfileViewController *profileVC = [signInAndUpSB instantiateViewControllerWithIdentifier:@"profile"];
                 
-                MMDrawerController *rootController = [[MMDrawerController alloc] initWithCenterViewController:kindleAssiantVCNAV leftDrawerViewController:profileVC];
- 
-                [UIApplication sharedApplication].keyWindow.rootViewController = rootController;
+                ShareApp.drawerController = [[MMDrawerController alloc] initWithCenterViewController:fatherVC leftDrawerViewController:profileVC];
+                ShareApp.drawerController.view.backgroundColor = [UIColor whiteColor];
+                [ShareApp.drawerController setShowsShadow:YES]; // 是否显示阴影效果
+                ShareApp.drawerController.maximumLeftDrawerWidth = UIScreenWidth * 7/8; // 左边拉开的最大宽度
+                [ShareApp.drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+                [ShareApp.drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+                [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor whiteColor];
+  
+                [UIApplication sharedApplication].keyWindow.rootViewController = ShareApp.drawerController  ;
+                
             });
             
-        }else{
+        }
+        if (error.code == 101) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showError:@"账号或密码错误"];
-            }
+        }
+        
+        
+        
+        if (error.code == 20002) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showError:@"无法连接到服务器"];
+        }
     }];
 }
 

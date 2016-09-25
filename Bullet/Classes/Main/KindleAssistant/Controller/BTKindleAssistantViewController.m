@@ -7,31 +7,21 @@
 //
 
 #import "BTKindleAssistantViewController.h"
-#import "BTBook.h"
-#import "BTKindleBookCell.h"
 #import <MessageUI/MFMailComposeViewController.h>
-#import "BTSearchViewController.h"
-#import "BTBargainPriceBookViewController.h"
-#import "UIImageView+WebCache.h"
-#import "MBProgressHUD+MJ.h"
-#import "BTSearchHistoryViewController.h"
 
-
-// 取得AppDelegate单例
-#define ShareApp ((AppDelegate *)[[UIApplication sharedApplication] delegate])
 
 @interface BTKindleAssistantViewController ()<MFMailComposeViewControllerDelegate,UIAlertViewDelegate,UIDocumentInteractionControllerDelegate,UISearchBarDelegate,UISearchResultsUpdating,BTSearchHistoryViewControllerDelegate>
+
 @property (nonatomic,strong) UIDocumentInteractionController *documentInteration;
 @property (nonatomic,strong) BTBook *currentBook;
-
 @property (nonatomic,strong) BTSearchViewController *searchController;
 @property (nonatomic,strong) BTSearchHistoryViewController *searchHistoryController;
 @property (nonatomic,strong) NSMutableArray  *searchBooks;
 @property (nonatomic,strong) NSMutableArray  *localBooks;
 
 @property(nonatomic,strong) UILabel *footerView;
-
-//书籍详细信息view
+//搜索进程指示器
+@property (nonatomic,strong) UIActivityIndicatorView *indicatorView;
 
 
 @end
@@ -62,7 +52,7 @@
     [self.footerView setTextColor:[UIColor lightGrayColor]];
     [self.footerView setFont:font];
     self.tableView.tableFooterView = self.footerView;
-    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     //2.设置通知项
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(sendToKindle:) name:@"sendToKindle" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(openDownloadedBookWithNotification:) name:@"openDownloadedBook" object:nil];
@@ -72,63 +62,39 @@
     //3.加载本地书籍
     [self loadLocalBooks];
     
-    //4.设置amazon每日特价推荐按钮
-//    
-//    UIButton *bargainPriceBookCustomButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 81, 32)];
-//    [bargainPriceBookCustomButton addTarget:self action:@selector(specialBookCommandButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-//    [bargainPriceBookCustomButton setImage:[UIImage imageNamed:@"mood_buttonNormal_特价"] forState:UIControlStateNormal];
-//    [bargainPriceBookCustomButton setImage:[UIImage imageNamed:@"mood_buttonActive_特价"] forState:UIControlStateHighlighted];
-//    
-//    UIBarButtonItem *bargainPriceBookButton = [[UIBarButtonItem alloc] initWithCustomView:bargainPriceBookCustomButton];
-//
-//    
-//    self.navigationItem.rightBarButtonItem = bargainPriceBookButton;
+    //4.设置导航栏左侧按钮
+
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"cellBackground"] forBarMetrics:UIBarMetricsDefault];
-//
-    
-        UIButton *bargainPriceBookCustomButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 81, 32)];
-        [bargainPriceBookCustomButton addTarget:self action:@selector(showLeftController) forControlEvents:UIControlEventTouchUpInside];
-        [bargainPriceBookCustomButton setImage:[UIImage imageNamed:@"mood_buttonNormal_特价"] forState:UIControlStateNormal];
-        [bargainPriceBookCustomButton setImage:[UIImage imageNamed:@"mood_buttonActive_特价"] forState:UIControlStateHighlighted];
-    
-        UIBarButtonItem *bargainPriceBookButton = [[UIBarButtonItem alloc] initWithCustomView:bargainPriceBookCustomButton];
     
     
-        self.navigationItem.leftBarButtonItem = bargainPriceBookButton;
+    UIButton *toggleToLeft = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 34, 34)];
+    [toggleToLeft addTarget:self action:@selector(showLeftController) forControlEvents:UIControlEventTouchUpInside];
+    [toggleToLeft setImage:[UIImage imageNamed:@"default-profile"] forState:UIControlStateNormal];
+    [toggleToLeft setImage:[UIImage imageNamed:@"default-profile"] forState:UIControlStateHighlighted];
+    UIBarButtonItem *toggleToLeftButton = [[UIBarButtonItem alloc] initWithCustomView:toggleToLeft];
+    self.navigationItem.leftBarButtonItem = toggleToLeftButton;
     
-    
-    
-//    
-//    NSMutableDictionary *textAttrNormal = [NSMutableDictionary dictionary];
-//    textAttrNormal[NSForegroundColorAttributeName] = [UIColor blackColor ];
-//    
-//    NSMutableDictionary *textAttrSelected = [NSMutableDictionary dictionary];
-//    textAttrSelected[NSForegroundColorAttributeName] = [UIColor orangeColor];
-//    UITabBarItem *homeTabBarItem = [self.tabBarController.tabBar.items objectAtIndex:0];
-//    [homeTabBarItem setTitle:@"首页"];
-//    
-//    
-//    [homeTabBarItem setTitleTextAttributes:textAttrNormal forState:UIControlStateNormal];
-//    [homeTabBarItem setTitleTextAttributes:textAttrSelected forState:UIControlStateSelected];
-//    [homeTabBarItem setImage:[[UIImage imageNamed:@"tabbar_home"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-//    [homeTabBarItem setSelectedImage:[[UIImage imageNamed:@"tabbar_home_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-    
-//    UITabBarItem *profileTabBarItem = [self.tabBarController.tabBar.items objectAtIndex:1];
-//    [profileTabBarItem setTitle:@"我"];
-//    [profileTabBarItem setTitleTextAttributes:textAttrNormal forState:UIControlStateNormal];
-//    [profileTabBarItem setTitleTextAttributes:textAttrSelected forState:UIControlStateSelected];
-//
-//    [profileTabBarItem setImage:[[UIImage imageNamed:@"tabbar_profile"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-//    [profileTabBarItem setSelectedImage:[[UIImage imageNamed:@"tabbar_profile_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-    //5.设置搜索历史记录控制器
+    //5.设置导航栏右侧按钮
+    UIButton *toggleToRight = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 34, 34)];
+    [toggleToRight addTarget:self action:@selector(showLeftController) forControlEvents:UIControlEventTouchUpInside];
+    [toggleToRight setImage:[UIImage imageNamed:@"entity-term-66"] forState:UIControlStateNormal];
+    [toggleToRight setImage:[UIImage imageNamed:@"entity-term-66"] forState:UIControlStateHighlighted];
+    UIBarButtonItem *toggleToRightButton = [[UIBarButtonItem alloc] initWithCustomView:toggleToRight];
+    self.navigationItem.rightBarButtonItem = toggleToRightButton;
+
+    //6.设置搜索历史记录控制器
     self.searchHistoryController = [[BTSearchHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
     self.searchHistoryController.tableView.frame = CGRectMake(0, 44, [UIScreen mainScreen].bounds.size.width, self.view.bounds.size.height);
     self.searchHistoryController.delegate = self;
     
+  
     
  
 }
 
+
+
+// 弹出左侧控制器
 - (void)showLeftController
 {
     [ShareApp.drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:^(BOOL finished) {
@@ -158,7 +124,12 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     //此时searchController.active仍为yes
+    [_indicatorView stopAnimating];
+    self.searchController.active = NO;
+    if (!self.searchController.active) {
     [self loadLocalBooks];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"searchStopped" object:nil];
+    }
     
 }
 
@@ -183,7 +154,6 @@
         //设置cell数据
         cell.book = book;
     }else{
-        
         BTBook *book = _localBooks[indexPath.row];
         //设置cell数据
         cell.book = book;
@@ -233,8 +203,18 @@
                     [self.localBooks removeObjectAtIndex:indexPath.row];
                     [tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [MBProgressHUD showSuccess:@"删除成功"];
+                    if (self.localBooks.count == 0) {
+                        self.footerView.text = @"本地列表为空";
+                    }
                 }];
                 
+            }else{
+                [self.localBooks removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [MBProgressHUD showSuccess:@"删除成功"];
+                 if (self.localBooks.count == 0) {
+                self.footerView.text = @"本地列表为空";
+                 }
             }
         };
     }
@@ -291,6 +271,7 @@
  */
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
+    self.footerView.text = @"";
     //监测网络
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
@@ -308,15 +289,36 @@
         }
     }];
     
-    
+
     //开始搜索
     //若搜索栏无文字则显示搜索历史记录
     if (searchController.searchBar.text.length == 0 && searchController.active == YES) {
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"searchStart" object:nil];
         [self.view addSubview:self.searchHistoryController.view];
+        [self.tableView reloadData];
+        return;
+        
     }else{
         [self.searchHistoryController.view removeFromSuperview];
     }
     
+    //显示搜索进程指示器
+    if (self.searchController.active) {
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"searchStart" object:nil];
+        
+        _indicatorView = [[UIActivityIndicatorView alloc] init];
+        _indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        _indicatorView.center = CGPointMake(UIScreenWidth * 0.5, 60);
+        _indicatorView.width = 60;
+        _indicatorView.height = 60;
+        _indicatorView.hidesWhenStopped = YES;
+        [_indicatorView startAnimating];
+        
+        [self.view addSubview:_indicatorView];
+    }
+   
     
     //1.请求管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -347,9 +349,11 @@
             if (self.searchBooks.count == 0 ) {
             self.footerView.text = @"暂无搜索结果";
             }else{
+                
             self.footerView.text = @"已无更多";
             }
         }
+        [_indicatorView stopAnimating];
         [self.tableView reloadData];
     });
 }
@@ -359,9 +363,24 @@
     
     NSArray *tempArray = [[NSArray alloc] init];
     //将搜索记录添加进搜索历史记录
+    
+    __block BOOL historyExist = NO;
+    
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"searchHistoryArray"]) {
          tempArray = [[NSUserDefaults standardUserDefaults]objectForKey:@"searchHistoryArray"];
+        
+        [tempArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isEqualToString:searchBar.text]) {
+                historyExist = YES;
+            }
+        }];
     }
+    
+    if (historyExist) {
+        return;
+    }
+    
+    
     self.searchHistoryController.searchHistoryArray = [NSMutableArray arrayWithArray:tempArray];
     [self.searchHistoryController.searchHistoryArray addObject:searchBar.text];
     [self.searchHistoryController.tableView reloadData];
@@ -418,11 +437,14 @@
         //显示本地书籍列表为空
         self.footerView.text = @"本地列表为空";
 
+    }else{
+        self.footerView.text = @"";
     }
-    NSArray *temp = (NSArray *)_localBooks;
-    _searchBooks = [NSMutableArray arrayWithArray:temp];
+
     
-    [self.tableView reloadData];
+         [self.tableView reloadData];
+    
+   
     
     
 }
@@ -432,45 +454,46 @@
 - (void)sendToKindle:(NSNotification *)notification
 {
     self.currentBook = notification.object;
-    NSString *userEmailAddress = [[NSUserDefaults standardUserDefaults] objectForKey:@"userEmailAddress"];
-    //判断用户是否输入过邮箱地址
-    if (userEmailAddress) {
-        MFMailComposeViewController *mailComposeVC = [[MFMailComposeViewController alloc] init];
-        mailComposeVC.mailComposeDelegate = self;
-        NSFileManager *manager = [NSFileManager defaultManager];
-        NSString *bookFullName = [_currentBook.title stringByAppendingFormat:@".%@",_currentBook.suffix];
-        NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
-        
-        if ([manager fileExistsAtPath:path]) {
-            if([MFMailComposeViewController canSendMail])
-            {
-                Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
-                if (!mailClass) {
-                    //                    [self alertWithMessage:@"当前系统版本不支持应用内发送邮件功能，您可以使用mailto方法代替"];
-                    return;
-                }
-                if (![mailClass canSendMail]) {
-                    //                    [self alertWithMessage:@"用户没有设置邮件账户"];
-                    return;
-                }
-                
-                [mailComposeVC setSubject:@"推送到kindle"];
-                
-                //收件人
-                NSArray *toRecipients = [NSArray arrayWithObject: userEmailAddress];
-                [mailComposeVC setToRecipients:toRecipients];
-                
-                NSData *data = [NSData dataWithContentsOfFile:path];
-                [mailComposeVC addAttachmentData:data mimeType:@"" fileName:bookFullName];
-                [self presentViewController:mailComposeVC animated:YES completion:^{
-                }];
-            }
-        }
-    }else{
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"请输入默认kindle邮箱地址" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"发送", nil];
-        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-        [alertView show];
+    if (kNetworkNotReachability) {
+        [MBProgressHUD showError:@"网络故障,请稍后重试"];
+        return;
     }
+    //判断用户是否输入过邮箱地址
+//    if (userEmailAddress) {
+//        MFMailComposeViewController *mailComposeVC = [[MFMailComposeViewController alloc] init];
+//        mailComposeVC.mailComposeDelegate = self;
+//        NSFileManager *manager = [NSFileManager defaultManager];
+//        NSString *bookFullName = [_currentBook.title stringByAppendingFormat:@".%@",_currentBook.suffix];
+//        NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
+//        
+//        if ([manager fileExistsAtPath:path]) {
+//            if([MFMailComposeViewController canSendMail])
+//            {
+//                Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+//                if (!mailClass) {
+//                    //                    [self alertWithMessage:@"当前系统版本不支持应用内发送邮件功能，您可以使用mailto方法代替"];
+//                    return;
+//                }
+//                if (![mailClass canSendMail]) {
+//                    //                    [self alertWithMessage:@"用户没有设置邮件账户"];
+//                    return;
+//                }
+//                
+//                [mailComposeVC setSubject:@"推送到kindle"];
+//                
+//                //收件人
+//                NSArray *toRecipients = [NSArray arrayWithObject: userEmailAddress];
+//                [mailComposeVC setToRecipients:toRecipients];
+//                
+//                NSData *data = [NSData dataWithContentsOfFile:path];
+//                [mailComposeVC addAttachmentData:data mimeType:@"" fileName:bookFullName];
+//                [self presentViewController:mailComposeVC animated:YES completion:^{
+//                }];
+//            }
+//        }
+//    }else{
+//    
+//    }
 }
 /**
  *  打开已下载的书籍
@@ -547,19 +570,7 @@
     }];
 }
 
-/**
- *  打开书籍特价菜单
- */
-- (void)specialBookCommandButtonClicked
-{
-    
-    BTBargainPriceBookViewController *specialBookAccountVC = [[BTBargainPriceBookViewController alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:specialBookAccountVC];
-    [self presentViewController:nav animated:YES completion:^{
-        
-    }];
 
-}
 
 /**
  *  点击了搜索历史记录cell

@@ -7,8 +7,10 @@
 //
 
 #import "BTSearchHistoryViewController.h"
+#import "BTSearchHistoryCell.h"
+@interface BTSearchHistoryViewController ()<BTSearchHistoryCellDelegate>
 
-@interface BTSearchHistoryViewController ()
+@property (nonatomic,strong) UIButton *clearHistoryButton;
 
 @end
 
@@ -18,12 +20,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.searchHistoryArray = [[NSMutableArray alloc] init];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    _clearHistoryButton = [[UIButton alloc] init];
+    _clearHistoryButton.frame = CGRectMake(0, 0, UIScreenWidth, 44);
+    _clearHistoryButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [_clearHistoryButton.titleLabel setFont:[UIFont systemFontOfSize:14.0]];
+//    _clearHistoryButton.titleLabel.textColor = [UIColor blackColor];
+    [_clearHistoryButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_clearHistoryButton setTitle:@"清除搜索历史" forState:UIControlStateNormal];
+    [_clearHistoryButton addTarget:self action:@selector(clearSearchHistory) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"searchHistoryArray"]) {
-        self.searchHistoryArray  = [[NSUserDefaults standardUserDefaults]objectForKey:@"searchHistoryArray"];
+        NSArray *tempArray  = [[NSUserDefaults standardUserDefaults]objectForKey:@"searchHistoryArray"];
+        self.searchHistoryArray = [NSMutableArray arrayWithArray:tempArray];
     }
     
-    [self.tableView reloadData];
+    
+    
+  
+    
+   
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+
+      [self.tableView reloadData];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -45,22 +65,24 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    
+    
     return self.searchHistoryArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 30;
+    return 44;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellId = @"searchHistoryCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    }
-    cell.textLabel.text = self.searchHistoryArray[indexPath.row];
+    static NSString *cellId = @"historyCell";
+    BTSearchHistoryCell *cell = [BTSearchHistoryCell cellWithTableView:tableView andIdentifier:cellId];
     
+    cell.historyName = self.searchHistoryArray[indexPath.row];
+    cell.tag = indexPath.row;
+    cell.delegate = self;
     return cell;
 }
 
@@ -72,26 +94,63 @@
 }
 
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
 
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+//    UIView *coverView = [[UIView alloc ]initWithFrame:CGRectMake(0, 0, UIScreenWidth, 44)];
+//    coverView.backgroundColor = [UIColor blackColor];
+//    [coverView addSubview:_clearHistoryButton];
+//
+        if (self.searchHistoryArray.count > 4) {
+            return  _clearHistoryButton;
+
+        }else{
+            return nil;
+        }
+}
+
+- (void)clearSearchHistory
+{
+    [self.searchHistoryArray removeAllObjects];
+    [[NSUserDefaults standardUserDefaults]setObject:self.searchHistoryArray forKey:@"searchHistoryArray"];
+    [self.tableView reloadData];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (self.searchHistoryArray.count > 4) {
+        return  44;
+        
+    }else{
+        return 0;
+    }
+ 
+}
+
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//   
+//}
+
+- (void)deleteHistoryCellWithTag:(NSUInteger)tag
+{
+    NSArray *visibleCells = [self.tableView visibleCells];
+    for (BTSearchHistoryCell *cell in visibleCells) {
+        if (cell.tag == tag) {
+            [self.searchHistoryArray removeObjectAtIndex:tag];
+            [[NSUserDefaults standardUserDefaults]setObject:self.searchHistoryArray forKey:@"searchHistoryArray"];
+            [self.tableView reloadData];
+            break;
+        }
+    }
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.view endEditing:YES];
+}
 /*
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
