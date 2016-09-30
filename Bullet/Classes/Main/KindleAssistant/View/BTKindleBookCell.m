@@ -37,7 +37,7 @@
     
 
     
-    NSString *baseImageURL =[NSString stringWithFormat:@"http://172.18.96.73:8888%@",_book.cover];
+    NSString *baseImageURL =[NSString stringWithFormat:@"http://15809m650x.iok.la%@",_book.cover];
     baseImageURL = [baseImageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     NSURL *imageURL = [NSURL URLWithString:baseImageURL];
@@ -290,11 +290,7 @@
             
             //下载书籍
             
-            if ([self.book.path length] > 25) {
-                self.book.path = [self.book.path substringFromIndex:25.0];
-            }
-            
-            NSString *bookBaseURL = [NSString stringWithFormat:@"http://172.18.96.73:8888%@",self.book.path];
+            NSString *bookBaseURL = [NSString stringWithFormat:@"http:// 15809m650x.iok.la%@",self.book.path];
             bookBaseURL = [bookBaseURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSURL *bookRequestURL = [NSURL URLWithString:bookBaseURL];
             
@@ -312,11 +308,7 @@
 {
     if (buttonIndex == 1) {
         //下载书籍
-        if ([self.book.path length] > 25) {
-            self.book.path = [self.book.path substringFromIndex:25.0];
-        }
-        
-        NSString *bookBaseURL = [NSString stringWithFormat:@"http://172.18.96.73:8888%@",self.book.path];
+        NSString *bookBaseURL = [NSString stringWithFormat:@"http://15809m650x.iok.la%@",self.book.path];
         bookBaseURL = [bookBaseURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *bookRequestURL = [NSURL URLWithString:bookBaseURL];
         
@@ -363,8 +355,8 @@
                     [queue inDatabase:^(FMDatabase *db) {
                         if ([db open]) {
                             
-                            NSString *sqlString = @"CREATE TABLE IF NOT EXISTS bt_book (bt_bookId VARCHAR PRIMARY KEY ,bt_title VARCHAR ,bt_suffix VARCHAR,bt_author VARCHAR NOT NULL DEFAULT '',bt_category VARCHAR NOT NULL DEFAULT '',bt_publisher VARCHAR NOT NULL DEFAULT '',bt_publish_time VARCHAR NOT NULL DEFAULT '',bt_size VARCHAR,bt_cover_path VARCHAR NOT NULL DEFAULT '');";
-                            NSString *sqlString2 = [NSString stringWithFormat: @"INSERT INTO bt_book (bt_bookId,bt_title  ,bt_suffix ,bt_author ,bt_category ,bt_publisher ,bt_publish_time ,bt_size ,bt_cover_path) VALUES ('%@','%@','%@','%@','%@','%@','%@','%@','%@');",self.book.bookId,self.book.title,self.book.suffix,self.book.author,self.book.category,self.book.publisher,self.book.publishTime,self.book.size,self.book.cover ];
+                            NSString *sqlString = @"CREATE TABLE IF NOT EXISTS bt_book (bt_bookId VARCHAR PRIMARY KEY ,bt_title VARCHAR ,bt_suffix VARCHAR,bt_author VARCHAR NOT NULL DEFAULT '',bt_category VARCHAR NOT NULL DEFAULT '',bt_publisher VARCHAR NOT NULL DEFAULT '',bt_publish_time VARCHAR NOT NULL DEFAULT '',bt_size VARCHAR,bt_cover_path VARCHAR NOT NULL DEFAULT '',bt_tag VARCHAR NOT NULL DEFAULT '',bt_rating VARCHAR NOT NULL DEFAULT '');";
+                            NSString *sqlString2 = [NSString stringWithFormat: @"INSERT INTO bt_book (bt_bookId,bt_title  ,bt_suffix ,bt_author ,bt_category ,bt_publisher ,bt_publish_time ,bt_size ,bt_cover_path,bt_tag,bt_rating) VALUES ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@');",self.book.bookId,self.book.title,self.book.suffix,self.book.author,self.book.category,self.book.publisher,self.book.publishTime,self.book.size,self.book.cover,self.book.tag,self.book.rating];
                             
                             [db executeUpdate:sqlString];
                             BOOL result = [db executeUpdate:sqlString2];

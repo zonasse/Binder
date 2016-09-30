@@ -18,12 +18,12 @@
         self.author = dict[@"bt_author"];
         self.size = dict[@"bt_size"];
         self.size = [NSString stringWithFormat:@"%.1fMB",self.size.intValue/(1024*1024.0)];
-        if ([dict[@"bt_cover_path"] length] > 25) {
-            self.cover = [dict[@"bt_cover_path"] substringFromIndex:25.0];
-        }else{
-            self.cover = dict[@"bt_cover_path"];
-        }
+       
+        self.cover = dict[@"bt_cover_path"];
+
+        self.tag = dict[@"bt_tag"];
         
+        self.rating = dict[@"bt_rating"];
         
         self.suffix = dict[@"bt_suffix"];
       

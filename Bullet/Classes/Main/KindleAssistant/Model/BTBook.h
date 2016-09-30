@@ -39,11 +39,13 @@ typedef enum btBookDownloadStatus
 @property (nonatomic,copy) NSString *publisher;
 //出版时间
 @property (nonatomic,copy) NSString *publishTime;
-
+//分类
+@property (nonatomic,copy) NSString *tag;
+//评分
+@property (nonatomic,copy) NSString *rating;
 
 @property (nonatomic,assign) btBookStatus bookStatus;
 
-//@property (nonatomic,copy) NSString *bookDescription;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
 @end

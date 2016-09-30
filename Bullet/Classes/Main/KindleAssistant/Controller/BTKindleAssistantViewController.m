@@ -197,7 +197,7 @@
                 [[NSFileManager defaultManager] removeItemAtPath:[downloadBookPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",book.title,book.suffix]] error:nil];
                 
                 
-                NSString *baseImageURL =[NSString stringWithFormat:@"http://172.18.96.73:8888%@",book.cover];
+                NSString *baseImageURL =[NSString stringWithFormat:@"http:// 15809m650x.iok.la%@",book.cover];
                 baseImageURL = [baseImageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 [[SDImageCache sharedImageCache]removeImageForKey: baseImageURL fromDisk:YES withCompletion:^{
                     [self.localBooks removeObjectAtIndex:indexPath.row];
@@ -340,7 +340,7 @@
     dispatch_group_async(group, queue, ^{
         //向私人服务器发送搜索请求
         
-        [self searchBooksWithURLAddress:@"http://172.18.96.73:8888/www/BulletApi/searchBooks.php" params:@{@"book":book} manager:manager group:group];
+        [self searchBooksWithURLAddress:@"http://15809m650x.iok.la/BulletApi/searchBooks.php" params:@{@"book":book} manager:manager group:group];
     });
     //搜索结束
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
@@ -428,7 +428,8 @@
             book.size = [resultSet stringForColumn:@"bt_size"];
             book.cover = [resultSet stringForColumn:@"bt_cover_path"];
             book.bookStatus = btBookStatusDownloaded;
-            
+            book.tag = [resultSet stringForColumn:@"bt_tag"];
+            book.rating = [resultSet stringForColumn:@"bt_rating"];
             [self.localBooks addObject:book];
         }
     }
