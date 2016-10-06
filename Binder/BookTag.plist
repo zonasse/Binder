@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>全部</string>
+	<string>商业</string>
+	<string>管理</string>
+	<string>国学</string>
+	<string>传记</string>
+	<string>励志</string>
+	<string>心理</string>
+	<string>小说</string>
+	<string>文学</string>
+	<string>爱情</string>
+	<string>散文</string>
+	<string>随笔</string>
+	<string>文化</string>
+	<string>科普</string>
+	<string>哲学</string>
+	<string>经济</string>
+	<string>历史</string>
+	<string>青春</string>
+	<string>政治</string>
+	<string>生活</string>
+	<string>悬疑</string>
+	<string>思维</string>
+	<string>奇幻</string>
+	<string>科幻</string>
+	<string>台湾</string>
+	<string>中国历史</string>
+	<string>社会</string>
+	<string>推理</string>
+	<string>成长</string>
+	<string>宗教</string>
+	<string>网络小说</string>
+	<string>计算机</string>
+	<string>儿童文学</string>
+	<string>古典文学</string>
+	<string>武侠</string>
+	<string>中国</string>
+	<string>日本</string>
+	<string>美国</string>
+	<string>英国</string>
+	<string>法国</string>
+	<string>台湾</string>
+	<string>外国文学</string>
+	<string>英文原版</string>
+</array>
+</plist>
