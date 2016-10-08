@@ -37,9 +37,7 @@
     CGFloat bottomViewHeight = 35;
     
     _bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, UIScreenHeight - bottomViewHeight + 1, UIScreenWidth , bottomViewHeight)];
-//    _bottomView.center = CGPointMake(UIScreenWidth * 0.5, UIScreenHeight - 0.5 * bottomViewHeight );
-//    _bottomView.width = UIScreenWidth - 30 * 2;
-//    _bottomView.height = bottomViewHeight;
+
     
     [_bottomView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"cellBackground"]]];
     
@@ -85,7 +83,6 @@
     [self showWebViewControllerWithURLString:@"http://t.bookdna.cn/" title:@"kindle特价书"];
     
     
-//    [UIApplication sharedApplication].keyWindow.rootViewController = bargainPriceBookNAV;
 }
 
 - (void)rssSend

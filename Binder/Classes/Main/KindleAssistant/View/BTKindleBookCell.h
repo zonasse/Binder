@@ -10,10 +10,11 @@
 
 @interface BTKindleBookCell : UITableViewCell
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView andIdentifier:(NSString *)identifier;
+
 
 @property (nonatomic,strong) BTBook  *book;
 
+@property (nonatomic,assign) NSInteger  rowNumber;
 
 
 @end

@@ -28,7 +28,6 @@
 @property (nonatomic,strong) UIButton *cancelDownloadButton;
 
 
-
 @property (nonatomic,strong) NSURLSessionDownloadTask *downloadTask;
 
 @end
@@ -50,16 +49,19 @@
     if (originalImage) {
         _bookImageView.image = originalImage;
     }else{
-        [_bookImageView sd_setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"placeholdImage"]];
+        [_bookImageView sd_setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"defaultBook"]];
     }
    
     
     
-    
-    _bookTitleLabel.text = book.title;
+    if (self.rowNumber != 0) {
+        _bookTitleLabel.text = [NSString stringWithFormat:@"%ld.%@",(long)self.rowNumber,book.title];
+    }else{
+    _bookTitleLabel.text =  book.title;
+    }
     _bookAuthorLabel.text = [NSString stringWithFormat:@"作者:%@", book.author? book.author:@"未知"];
 
-    _bookSizeLabel.text = [NSString stringWithFormat:@"文件:%@", book.size];
+    _bookSizeLabel.text = [NSString stringWithFormat:@"%@", book.size];
     
     _bookSuffixLabel.text = [NSString stringWithFormat:@"格式:%@",book.suffix];
     _bookTagLabel.text = [NSString stringWithFormat:@"标签:%@", book.tag ? book.tag:@"暂无"];
@@ -72,16 +74,16 @@
         [_downloadButton setTitle:@"  打开" forState:UIControlStateNormal];
         [_downloadButton setTitle:@"  打开" forState:UIControlStateHighlighted];
         [_downloadButton setImage:[UIImage imageNamed:@"cellBottom_0002_Book-Checked-[book,checked,reading]"] forState:UIControlStateNormal];
-        [_downloadButton setImage:[UIImage imageNamed:@"cellBottom_0002_Book-Checked-[book,checked,reading]"] forState:UIControlStateHighlighted];
+        
     
     }else if(_book.bookStatus == btBookStatusNone){
-        [_progressView setProgress:0.0];
+        
         //没有下载
     
         [_downloadButton setTitle:@"  下载" forState:UIControlStateNormal];
-        [_downloadButton setTitle:@"  下载" forState:UIControlStateHighlighted];
+
         [_downloadButton setImage:[UIImage imageNamed:@"cellBottom_0003_Book-Download-[book,download,reading]"] forState:UIControlStateNormal];
-        [_downloadButton setImage:[UIImage imageNamed:@"cellBottom_0003_Book-Download-[book,download,reading]"] forState:UIControlStateHighlighted];
+  
         
     }
 }
@@ -91,7 +93,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         //文字字体
-        UIFont *font = [UIFont fontWithName:@"Marker Felt" size:12.0];
+        UIFont *font = [UIFont fontWithName:@"Marker Felt" size:13.0];
         
         
         //创建替代cell默认contentView的imageView
@@ -109,57 +111,65 @@
         self.bookImageView.userInteractionEnabled = YES;
 
         //创建书名label
-        self.bookTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.bookImageView.frame) + 10, 4, 120, 24)];
+        self.bookTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.bookImageView.frame) + 10, 4, _replaceContentView.width - (10+ 60+10+10), 24)];
+        self.bookTitleLabel.textColor = [UIColor blackColor];
         self.bookTitleLabel.font = font;
         [_replaceContentView addSubview:_bookTitleLabel];
         
 
         //创建书作者label
-        self.bookAuthorLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.bookTitleLabel.x, CGRectGetMaxY(self.bookTitleLabel.frame) + 4, self.bookTitleLabel.width, self.bookTitleLabel.height)];
-        self.bookAuthorLabel.font = [font fontWithSize:12.0];
+        self.bookAuthorLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.bookTitleLabel.x, CGRectGetMaxY(self.bookTitleLabel.frame) + 4, (self.bookTitleLabel.width - 10) * 0.5, self.bookTitleLabel.height)];
+        self.bookAuthorLabel.font = font;
+        self.bookAuthorLabel.adjustsFontSizeToFitWidth = YES;
+        self.bookAuthorLabel.textColor = [UIColor brownColor];
+
         [_replaceContentView addSubview:_bookAuthorLabel];
 
+        //创建书格式label
+       
+        self.bookSuffixLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.bookTitleLabel.x, CGRectGetMaxY(self.bookAuthorLabel.frame) + 4, self.bookAuthorLabel.width * 0.5, self.bookTitleLabel.height)];
+        self.bookSuffixLabel.font = font;
+        self.bookSuffixLabel.textColor = [UIColor brownColor];
+        self.bookSuffixLabel.textAlignment = NSTextAlignmentLeft;
+        self.bookSuffixLabel.adjustsFontSizeToFitWidth = YES;
+        [_replaceContentView addSubview:_bookSuffixLabel];
 
         //创建书文件大小label
-        self.bookSizeLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.bookTitleLabel.x, CGRectGetMaxY(self.bookAuthorLabel.frame) + 4, self.bookTitleLabel.width * 0.5, self.bookTitleLabel.height)];
+        self.bookSizeLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.bookSuffixLabel.frame) , self.bookSuffixLabel.y, self.bookAuthorLabel.width * 0.5, self.bookTitleLabel.height)];
         self.bookSizeLabel.font = font;
-        self.bookSizeLabel.textAlignment = NSTextAlignmentLeft;
-        [_replaceContentView addSubview:_bookSizeLabel];
+        self.bookSizeLabel.textColor = [UIColor brownColor];
 
-        //创建书格式label
-        self.bookSuffixLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.bookSizeLabel.frame) , self.bookSizeLabel.y, self.bookTitleLabel.width * 0.5, self.bookTitleLabel.height)];
-        self.bookSuffixLabel.font = font;
-        self.bookSuffixLabel.textAlignment = NSTextAlignmentLeft;
-        [_replaceContentView addSubview:_bookSuffixLabel];
+        self.bookSizeLabel.textAlignment = NSTextAlignmentCenter;
+        [_replaceContentView addSubview:_bookSizeLabel];
 
         
         //创建书标签label
-        self.bookTagLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.bookTitleLabel.frame) + 10, self.bookTitleLabel.y, 100, self.bookTitleLabel.height)];
-        self.bookTagLabel.font = [font fontWithSize:12.0];
+        self.bookTagLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.bookAuthorLabel.frame) + 10, self.bookAuthorLabel.y, self.bookAuthorLabel.width, self.bookTitleLabel.height)];
+        self.bookTagLabel.font = font;
+        self.bookTagLabel.textColor = [UIColor brownColor];
+
         [_replaceContentView addSubview:_bookTagLabel];
 
-        
+        //创建书评分label
         self.bookRatingLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.bookTagLabel.x, CGRectGetMaxY(self.bookTagLabel.frame) + 4, self.bookTagLabel.width, self.bookTagLabel.height)];
-        self.bookRatingLabel.font = [font fontWithSize:12.0];
+        self.bookRatingLabel.font = font;
+        self.bookRatingLabel.textColor = [UIColor brownColor];
+
         [_replaceContentView addSubview:self.bookRatingLabel];
         
+        //cell底部条
         CGFloat bottomToolBarHeight = 34;
         UIImageView *bottomToolBar = [[UIImageView alloc] initWithFrame:CGRectMake(0, _replaceContentView.height - bottomToolBarHeight, _replaceContentView.width, bottomToolBarHeight)];
         bottomToolBar.userInteractionEnabled = YES;
-//        bottomToolBar.image = [UIImage imageNamed:@"cellBottomTool_0000_Forme-1"];
-        
-//        bottomToolBar.backgroundColor = [UIColor whiteColor];
-//        bottomToolBar.alpha  = 0.5;
+
         
       
         //创建发送到kindle button
-        self.bookSendToKindleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0 , _replaceContentView.width / 3, bottomToolBarHeight)];
+        self.bookSendToKindleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0 , _replaceContentView.width / 3, bottomToolBarHeight - 1)];
         [_bookSendToKindleButton setImage:[UIImage imageNamed:@"cellBottom_0004_Send-[communication,paper-airplane,send]"] forState:UIControlStateNormal];
-        [_bookSendToKindleButton setImage:[UIImage imageNamed:@"cellBottom_0004_Send-[communication,paper-airplane,send"] forState:UIControlStateHighlighted];
-//        [_bookSendToKindleButton setBackgroundImage:[UIImage imageNamed:@"cellBottomToolButton_0000s_0005_Rounded-Rectangle-1-copy-4" ]forState:UIControlStateNormal ];
-//        [_bookSendToKindleButton setBackgroundImage:[UIImage imageNamed:@"cellBottomToolButton_0000s_0001_Rounded-Rectangle-1-copy-4" ]forState:UIControlStateHighlighted ];
+
         [_bookSendToKindleButton setTitle:@"kindle" forState:UIControlStateNormal];
-        [_bookSendToKindleButton setTitle:@"kindle" forState:UIControlStateHighlighted];
+        _bookSendToKindleButton.titleLabel.font = font;
         [_bookSendToKindleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         
         [self.bookSendToKindleButton addTarget:self action:@selector(sendToKindleButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -168,37 +178,33 @@
         
         //创建下载 button
         self.downloadButton = [[UIButton alloc] initWithFrame:CGRectMake(_replaceContentView.width / 3, 0, _bookSendToKindleButton.width, _bookSendToKindleButton.height)];
-//        [_downloadButton setBackgroundImage:[UIImage imageNamed:@"cellBottomToolButton_0000s_0005_Rounded-Rectangle-1-copy-4" ]forState:UIControlStateNormal ];
-//        [_downloadButton setBackgroundImage:[UIImage imageNamed:@"cellBottomToolButton_0000s_0001_Rounded-Rectangle-1-copy-4" ]forState:UIControlStateHighlighted ];
+        _downloadButton.titleLabel.font = font;
         [_downloadButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [self.downloadButton addTarget:self action:@selector(startDownload) forControlEvents:UIControlEventTouchUpInside];
+        [_downloadButton addTarget:self action:@selector(startDownload) forControlEvents:UIControlEventTouchUpInside];
         [bottomToolBar addSubview:_downloadButton];
 
         
         //创建在amazon中查找button
         self.searchInAmazonButton = [[UIButton alloc] initWithFrame:CGRectMake(self.replaceContentView.width * 2 / 3, 0, _bookSendToKindleButton.width, _bookSendToKindleButton.height)];
         [self.searchInAmazonButton setImage:[UIImage imageNamed:@"cellBottom_0000_1325"] forState:UIControlStateNormal];
-        [self.searchInAmazonButton setImage:[UIImage imageNamed:@"cellBottom_0000_1325"] forState:UIControlStateHighlighted];
+      
         [self.searchInAmazonButton setTitle:@"amazon" forState:UIControlStateNormal];
-        [self.searchInAmazonButton setTitle:@"amazon" forState:UIControlStateHighlighted];
-        self.searchInAmazonButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
+        
+        self.searchInAmazonButton.titleLabel.font = font;
 
 
         [_searchInAmazonButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 
         [_searchInAmazonButton addTarget:self action:@selector(findInAmazon) forControlEvents:UIControlEventTouchUpInside];
         
+        UIView *bottomViewLine = [[UIView alloc] initWithFrame:CGRectMake(0, bottomToolBar.height - 1, bottomToolBar.width, 1)];
+        bottomViewLine.backgroundColor = [UIColor brownColor];
+        
         [bottomToolBar addSubview:_searchInAmazonButton];
-            
+        [bottomToolBar addSubview:bottomViewLine];
     
         [_replaceContentView addSubview:bottomToolBar];
      
-    
-        
-        
-       
-        
-       
 
         
     }
@@ -207,14 +213,6 @@
 
 
 
-+ (instancetype)cellWithTableView:(UITableView *)tableView andIdentifier:(NSString *)identifier
-{
-    BTKindleBookCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    return cell;
-}
 
 - (void)startDownload
 {
@@ -229,44 +227,24 @@
         }
         break;
         case btBookStatusNone:{
-            
-            
-//            //监测网络
-//            [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-//                switch (status) {
-//                    case AFNetworkReachabilityStatusReachableViaWWAN:
-//                    {
-//                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"当前使用3G/4G移动数据，请注意流量" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续下载", nil];
-//                        alertView.delegate = self;
-//                        return ;
-//                    }
-//                        break;
-//                    case AFNetworkReachabilityStatusUnknown:
-//                    case AFNetworkReachabilityStatusNotReachable:
-//                        [MBProgressHUD showError:@"下载失败，当前无可用网络"];
-//                        return;
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }];
-    
-            
+            _downloadButton.enabled = NO;
             //进度条蒙版
             _hideView = [[UIView alloc ] initWithFrame:CGRectMake(0, 0, UIScreenWidth, self.replaceContentView.height - self.bookSendToKindleButton.height)];
-            _hideView.backgroundColor = [UIColor blackColor];
-            _hideView.alpha = 0.5;
-            
+            _hideView.backgroundColor = [UIColor whiteColor];
+            _hideView.alpha = 0.8;
+            _hideView.tag = 100;
+    
             //创建下载进度条
             self.progressView = [[ASProgressPopUpView alloc] init];
+            [_progressView setProgress:0.0];
             [self.progressView showPopUpViewAnimated:YES];
             self.progressView.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:16];
-            [self.progressView setPopUpViewAnimatedColors:@[[UIColor yellowColor],[UIColor blueColor],[UIColor greenColor]]];
+            [self.progressView setPopUpViewAnimatedColors:@[[UIColor brownColor],[UIColor blueColor],[UIColor orangeColor]]];
             self.progressView.frame = CGRectMake(0, self.contentView.bounds.size.height * 0.5, UIScreenWidth - 60, 2);
             
             //创建取消按钮
             _cancelDownloadButton = [[UIButton alloc] init];
-            _cancelDownloadButton.center = CGPointMake(UIScreenWidth - 45 , 25);
+            _cancelDownloadButton.center = CGPointMake(UIScreenWidth - 45 , _hideView.height * 0.5 - 17);
             _cancelDownloadButton.width = 34;
             _cancelDownloadButton.height = 34;
             [_cancelDownloadButton setImage:[UIImage imageNamed:@"list-cancel-badge"] forState:UIControlStateNormal];
@@ -279,11 +257,12 @@
             
             //下载书籍
             
+//            NSString *bookBaseURL = [NSString stringWithFormat:@"http://15809m650x.iok.la%@",self.book.path];
             NSString *bookBaseURL = [NSString stringWithFormat:@"http://15809m650x.iok.la%@",self.book.path];
             bookBaseURL = [bookBaseURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSURL *bookRequestURL = [NSURL URLWithString:bookBaseURL];
             
-            NSURLRequest *bookRequest = [NSURLRequest requestWithURL:bookRequestURL cachePolicy:1 timeoutInterval:20];
+            NSURLRequest *bookRequest = [NSURLRequest requestWithURL:bookRequestURL cachePolicy:1 timeoutInterval:10];
             
             [self downloadBookWithRequest:bookRequest];
 
@@ -293,19 +272,8 @@
 
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {
-        //下载书籍
-        NSString *bookBaseURL = [NSString stringWithFormat:@"http://15809m650x.iok.la%@",self.book.path];
-        bookBaseURL = [bookBaseURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSURL *bookRequestURL = [NSURL URLWithString:bookBaseURL];
-        
-        NSURLRequest *bookRequest = [NSURLRequest requestWithURL:bookRequestURL cachePolicy:1 timeoutInterval:20];
-        
-        [self downloadBookWithRequest:bookRequest];
-    }
-}
+
+
 
 /**
  *  下载方法
@@ -317,22 +285,21 @@
 - (void)downloadBookWithRequest:(NSURLRequest *)request
 {
    //下载对应书籍
-    
+   
     
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         self.downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
             
             //切换到主线程
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.progressView setProgress:downloadProgress.completedUnitCount/downloadProgress.totalUnitCount animated:YES] ;
+                [self.progressView setProgress: 1.0 * downloadProgress.completedUnitCount/downloadProgress.totalUnitCount  animated:YES] ;
             });
                 //判断下载是否完成
-                NSLog(@"%f",1.0 *downloadProgress.completedUnitCount/downloadProgress.totalUnitCount);
-                if (downloadProgress.completedUnitCount/downloadProgress.totalUnitCount  == 1.0) {
-                    
+            if (downloadProgress.completedUnitCount/downloadProgress.totalUnitCount == 1.0) {
+                
                     _cancelDownloadButton.enabled = NO;
                    
                     
@@ -356,7 +323,9 @@
                                 //切换到主线程
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     [_hideView removeFromSuperview];
-                                    [_downloadButton setTitle:@"打开" forState:UIControlStateNormal];
+                                    _downloadButton.enabled = YES;
+                                    [_downloadButton setTitle:@" 打开" forState:UIControlStateNormal];
+                                    [_downloadButton setImage:[UIImage imageNamed:@"cellBottom_0002_Book-Checked-[book,checked,reading]"] forState:UIControlStateNormal];
                                     _book.bookStatus = btBookStatusDownloaded;
                                 });
                             }
@@ -370,7 +339,12 @@
             NSURL *url = [NSURL fileURLWithPath:path];
             return url;
         } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
-            NSLog(@"%@",error.localizedDescription);
+            if (error) {
+                [MBProgressHUD showError:@"下载失败,请检查网络"];
+                [self cancelDownloadTask];
+                _downloadButton.enabled = YES;
+            }
+            
         }] ;
         
         [self.downloadTask resume];
@@ -386,6 +360,8 @@
 - (void)cancelDownloadTask{
     [self.downloadTask cancel];
     _book.bookStatus = btBookStatusNone;
+    [_downloadButton setTitle:@"下载" forState:UIControlStateNormal];
+     [_downloadButton setImage:[UIImage imageNamed:@"cellBottom_0003_Book-Download-[book,download,reading]"] forState:UIControlStateNormal];
     [_hideView removeFromSuperview];
     
 }
@@ -417,10 +393,7 @@
 - (void)sendToKindleButtonClicked
 {
     //向服务器发送邮件
-    if (kNetworkNotReachability) {
-        [MBProgressHUD showError:@"网络故障，请稍后重试"];
-        return;
-    }
+   
     [MBProgressHUD showMessage:@"推送中..."];
     BmobUser *user = [BmobUser currentUser];
     
@@ -436,17 +409,21 @@
         [params setObject:@"convert" forKey:@"convert"];
     }
     
-    [manager POST:@"http://15809m650x.iok.la/BinderApi/sendMail.php" parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showSuccess:@"书籍推送成功"];
-       
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showError:@"推送失败，请检查网络"];
-
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [manager POST:@"http://15809m650x.iok.la/BinderApi/sendMail.php" parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showSuccess:@"书籍推送成功"];
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showError:@"推送失败，请检查网络"];
+            
+        }];
+    });
+    
+   
     
 }
 

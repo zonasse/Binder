@@ -7,7 +7,6 @@
 //
 
 #import "BTBookLibraryViewController.h"
-#import "BTBookTagCollectionCell.h"
 #import "BTBookTagViewController.h"
 @interface BTBookLibraryViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
@@ -79,7 +78,7 @@ static NSString *const footerId = @"footerId";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    BTBookTagCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
 
     UIImageView *tagImageView = [[UIImageView alloc] initWithFrame:cell.bounds];
     tagImageView.image = [UIImage imageNamed:@"collectionCellBackground_0004_Texture"];
@@ -198,8 +197,9 @@ static NSString *const footerId = @"footerId";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *bookTag = self.bookTagArray[indexPath.item];
-    BTBookTagViewController *bookTagVC = [[BTBookTagViewController alloc] init];
+    BTBookTagViewController *bookTagVC = [[BTBookTagViewController alloc] initWithStyle:UITableViewStyleGrouped];
     bookTagVC.bookTag = bookTag;
+    
     [self.navigationController pushViewController:bookTagVC animated:YES];
     bookTagVC.title = bookTag;
 }

@@ -17,8 +17,8 @@
 @property (nonatomic,strong) BTSearchHistoryViewController *searchHistoryController;
 @property (nonatomic,strong) NSMutableArray  *searchBooks;
 @property (nonatomic,strong) NSMutableArray  *localBooks;
-
-@property(nonatomic,strong) UILabel *footerView;
+@property (nonatomic,strong) UILabel *normalFooterView;
+@property(nonatomic,strong) UILabel *loadMoreFooterView;
 //搜索进程指示器
 @property (nonatomic,strong) UIActivityIndicatorView *indicatorView;
 
@@ -44,23 +44,16 @@
     
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    UIFont *font = [UIFont fontWithName:@"Marker Felt" size:14.0];
-    self.footerView = [[UILabel alloc] init];
-    self.footerView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 20);
-    [self.footerView setTextAlignment:NSTextAlignmentCenter];
-    [self.footerView setTextColor:[UIColor lightGrayColor]];
-    [self.footerView setFont:font];
-    self.tableView.tableFooterView = self.footerView;
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     //2.设置通知项
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(openDownloadedBookWithNotification:) name:@"openDownloadedBook" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showBookDetailView:) name:@"showBookDetailView" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(findInAmazon:) name:@"findInAmazon" object:nil];
-    //3.加载本地书籍
-    [self loadLocalBooks];
+   
     
-    //4.设置导航栏左侧按钮
+    //3.设置导航栏左侧按钮
 
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"cellBackground"] forBarMetrics:UIBarMetricsDefault];
     
@@ -72,7 +65,7 @@
     UIBarButtonItem *toggleToLeftButton = [[UIBarButtonItem alloc] initWithCustomView:toggleToLeft];
     self.navigationItem.leftBarButtonItem = toggleToLeftButton;
     
-    //5.设置导航栏右侧按钮
+    //4.设置导航栏右侧按钮
     UIButton *toggleToRight = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
     [toggleToRight addTarget:self action:@selector(showBooksTag) forControlEvents:UIControlEventTouchUpInside];
     [toggleToRight setImage:[UIImage imageNamed:@"right_navItem_normal"] forState:UIControlStateNormal];
@@ -82,7 +75,7 @@
     UIBarButtonItem *toggleToRightButton = [[UIBarButtonItem alloc] initWithCustomView:toggleToRight];
     self.navigationItem.rightBarButtonItem = toggleToRightButton;
 
-    //6.设置搜索历史记录控制器
+    //5.设置搜索历史记录控制器
     self.searchHistoryController = [[BTSearchHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
     self.searchHistoryController.tableView.frame = CGRectMake(0, 44, [UIScreen mainScreen].bounds.size.width, self.view.bounds.size.height);
     self.searchHistoryController.delegate = self;
@@ -94,8 +87,24 @@
     _indicatorView.width = 60;
     _indicatorView.height = 60;
     _indicatorView.hidesWhenStopped = YES;
- 
+    // 6.创建footerView
+    if (self.searchController.active == NO) {
+
+        //正常
+        self.tableView.tableFooterView = nil;
+        UIFont *font = [UIFont fontWithName:@"Marker Felt" size:14.0];
+        self.normalFooterView = [[UILabel alloc] init];
+        self.normalFooterView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 34);
+        [self.normalFooterView setTextAlignment:NSTextAlignmentCenter];
+        [self.normalFooterView setTextColor:[UIColor lightGrayColor]];
+        [self.normalFooterView setFont:font];
+        self.tableView.tableFooterView = self.normalFooterView;
+    }
+    
+    //7.加载本地书籍
+    [self loadLocalBooks];
 }
+
 
 - (void)findInAmazon:(NSNotification *)notification
 {
@@ -121,10 +130,7 @@
 //弹出书籍分类控制器
 - (void)showBooksTag
 {
-//    [MBProgressHUD showMessage:@"书籍分类功能正在完善中"];
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [MBProgressHUD hideHUD];
-//    });
+
     BTBookLibraryViewController *bookLibraryVC = [[BTBookLibraryViewController alloc] init];
     UINavigationController *bookLibraryNAV = [[UINavigationController alloc ]initWithRootViewController:bookLibraryVC];
     
@@ -163,7 +169,7 @@
     self.searchController.active = NO;
     if (!self.searchController.active) {
     [self loadLocalBooks];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"searchStopped" object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"searchStopped" object:nil];
     }
     
 }
@@ -183,16 +189,26 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellId = @"bookCell";
-    BTKindleBookCell *cell = [BTKindleBookCell cellWithTableView:tableView andIdentifier:cellId];
-    if (self.searchController.active) {
-        BTBook *book = _searchBooks[indexPath.row];
-        //设置cell数据
-        cell.book = book;
-    }else{
-        BTBook *book = _localBooks[indexPath.row];
-        //设置cell数据
-        cell.book = book;
-    }
+    
+    BTKindleBookCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if (!cell) {
+            cell = [[BTKindleBookCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        }
+
+        if (self.searchController.active) {
+            cell.rowNumber = indexPath.row + 1;
+            BTBook *book = _searchBooks[indexPath.row];
+            //设置cell数据
+            cell.book = book;
+            
+        }else{
+            cell.rowNumber = 0;
+            BTBook *book = _localBooks[indexPath.row];
+            //设置cell数据
+            cell.book = book;
+           
+        }
+
     
     return cell;
 }
@@ -239,7 +255,7 @@
                     [tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [MBProgressHUD showSuccess:@"删除成功"];
                     if (self.localBooks.count == 0) {
-                        self.footerView.text = @"本地列表为空";
+                        self.normalFooterView.text = @"本地列表为空";
                     }
                 }];
                 
@@ -248,13 +264,38 @@
                 [tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 [MBProgressHUD showSuccess:@"删除成功"];
                  if (self.localBooks.count == 0) {
-                self.footerView.text = @"本地列表为空";
+                self.normalFooterView.text = @"本地列表为空";
                  }
             }
         };
     }
     }
     
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+
+{
+    if (self.searchController.active == YES && _loadMoreFooterView) {
+        
+    
+    // 下拉到最底部时显示更多数据
+        // 1.差距
+        CGFloat delta = scrollView.contentSize.height - scrollView.contentOffset.y;
+        // 刚好能完整看到footer的高度
+        CGFloat sawFooterH = self.view.height - self.loadMoreFooterView.height;
+        
+        // 2.如果能看见整个footer
+        if (delta <= (sawFooterH - 0)) {
+            [self getMoreBooks];
+        
+        }
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return section ==0?0.1f:8.0f;// 0.1f:防止tableView顶部留白一块
 }
 
 /**
@@ -264,11 +305,11 @@
 {
     
     
-    self.footerView.text = @"";
+    self.normalFooterView.text = @"";
     //监测网络
     if (kNetworkNotReachability) {
         [MBProgressHUD showError:@"当前没有可用网络"];
-        self.footerView.text = @"暂无搜索结果";
+        self.normalFooterView.text = @"暂无搜索结果";
         return ;
     }
     
@@ -290,8 +331,7 @@
     if (self.searchController.active) {
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"searchStart" object:nil];
-        
-        
+
         [_indicatorView startAnimating];
         
         [self.view addSubview:_indicatorView];
@@ -313,29 +353,12 @@
     }
     
     NSString *book = self.searchController.searchBar.text;
-    
-    dispatch_group_t group = dispatch_group_create();
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_group_async(group, queue, ^{
+ 
         //向私人服务器发送搜索请求
         
-        [self searchBooksWithURLAddress:@"http://15809m650x.iok.la/BinderApi/searchBooks.php" params:@{@"book":book} manager:manager group:group];
-    });
-    //搜索结束
-    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        if (self.searchController.active == YES) {
-
-            if (self.searchBooks.count == 0 ) {
-            self.footerView.text = @"暂无搜索结果";
-            }else{
-                
-            self.footerView.text = @"已无更多";
-
-            }
-        }
-        [_indicatorView stopAnimating];
-        [self.tableView reloadData];
-    });
+                [self searchBooksWithURLAddress:@"http://15809m650x.iok.la/BinderApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
+//        [self searchBooksWithURLAddress:@"http://localhost:8888/www/BulletApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
+    
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -387,10 +410,6 @@
         _localBooks = [[NSMutableArray alloc] init];
     }
     //设置headerView
-    
-    
-    
-    
     //从本地数据库读取
     FMDatabase *downloadBookDatabase = [FMDatabase databaseWithPath:[downloadBookPath stringByAppendingPathComponent:@"downloadBook.db"]];
     if ([downloadBookDatabase open]) {
@@ -416,19 +435,21 @@
         }
     }
     [downloadBookDatabase close];
+    self.tableView.tableFooterView = nil;
+    if (self.loadMoreFooterView) {
+        self.loadMoreFooterView = nil;
+    }
+    self.tableView.tableFooterView = _normalFooterView;
     if (_localBooks.count == 0) {
         //显示本地书籍列表为空
-        self.footerView.text = @"本地列表为空";
+        
+        self.normalFooterView.text = @"本地列表为空";
 
     }else{
-        self.footerView.text = @"";
+        self.normalFooterView.text = @"";
     }
-
-    
          [self.tableView reloadData];
-    
-   
-    
+
     
 }
 
@@ -451,20 +472,28 @@
 /**
  *  搜索书籍
  */
-- (void)searchBooksWithURLAddress:(NSString *)address params:(NSDictionary *)params manager:(AFHTTPSessionManager *)manager group:(dispatch_group_t)group
+- (void)searchBooksWithURLAddress:(NSString *)address params:(NSDictionary *)params
 {
     __block NSError *error;
+    //1.请求管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
-    dispatch_group_enter(group);
     
-    [manager POST:address parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    dispatch_async(queue, ^{
+    
+        [manager POST:address parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSDictionary *responseBooksDict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:&error];
-        if (responseBooksDict[@"error"] || !responseBooksDict) {
-            dispatch_group_leave(group);
-            return ;
+        if (responseBooksDict[@"error"] ) {
+            if(_loadMoreFooterView)
+            {
+                [_loadMoreFooterView setText:@"已无更多"];
+            }
         }else{
             
             NSArray *reponseBooksArray = responseBooksDict[@"books"];
@@ -474,17 +503,55 @@
                 }
                 BTBook *book = [[BTBook alloc] initWithDictionary:bookDict];
                 [_searchBooks addObject:book];
+                
             }
-            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self.searchController.active == YES) {
+                    
+                    if (self.searchBooks.count > 0 ) {
+                        
+                        //上拉加载更多
+                        self.tableView.tableFooterView = nil;
+                        
+                        _loadMoreFooterView = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 34.0f)];
+                        _loadMoreFooterView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"timeline_new_status_background"]];
+                        [_loadMoreFooterView setFont:[UIFont fontWithName:@"Helvetica Neue" size:14]];
+                        [_loadMoreFooterView setTextAlignment:NSTextAlignmentCenter];
+                        [_loadMoreFooterView setText:@"上拉显示更多"];
+                        
+                        self.tableView.tableFooterView = _loadMoreFooterView;
+                        
+                    }else{
+                        
+                        self.normalFooterView.text = @"暂无搜索结果";
+                    }
+                }
+                [_indicatorView stopAnimating];
+                [self.tableView reloadData];
+                
+                
+            });
         }
         
-        dispatch_group_leave(group);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        dispatch_group_leave(group);
+        
     }];
+    });
+    
+   
+    
 }
+- (void)getMoreBooks
+{
+  
+    NSString *book = self.searchController.searchBar.text;
 
+    //向私人服务器发送搜索请求
+        
+            [self searchBooksWithURLAddress:@"http://15809m650x.iok.la/BinderApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
+//    [self searchBooksWithURLAddress:@"http://localhost:8888/www/BulletApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
 
+}
 
 /**
  *  点击了搜索历史记录cell
