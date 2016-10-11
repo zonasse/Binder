@@ -19,6 +19,7 @@ PODS:
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
   - Masonry (1.0.1)
+  - MJRefresh (3.1.12)
   - MMDrawerController (0.5.7):
     - MMDrawerController/Core (= 0.5.7)
     - MMDrawerController/MMDrawerBarButtonItem (= 0.5.7)
@@ -37,6 +38,7 @@ DEPENDENCIES:
   - BmobSDK
   - FMDB
   - Masonry
+  - MJRefresh
   - MMDrawerController (~> 0.5.7)
 
 SPEC CHECKSUMS:
@@ -44,6 +46,7 @@ SPEC CHECKSUMS:
   BmobSDK: e188cb31d6a8417ab668aee821da227d7512b865
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
+  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
 
 COCOAPODS: 0.39.0

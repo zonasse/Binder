@@ -30,7 +30,7 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		j7+8M+x/YxHXWSooMPFREmw6IUg=
+		aSly72LmsadsNcFIcBKvDV1lins=
 		</data>
 		<key>BTSignInAndUpStoryboard.storyboardc/Info.plist</key>
 		<data>
@@ -108,9 +108,44 @@
 		<data>
 		bsnH0mTXMKgCiM75bjX4+3ARVAs=
 		</data>
+		<key>MJRefresh.bundle/arrow@2x.png</key>
+		<data>
+		5ZENFuDcEgHjDuL7tn7h97HeuSE=
+		</data>
+		<key>MJRefresh.bundle/en.lproj/Localizable.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			+MqdSIQkOmft3feFB6CbJQkGr7c=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>MJRefresh.bundle/zh-Hans.lproj/Localizable.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			DD5bNeaUTksFP2PkSNtokoJkKjU=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>MJRefresh.bundle/zh-Hant.lproj/Localizable.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			hjIzn4qLs8xLMnelxOeMouDSaZY=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
 		<key>PkgInfo</key>
 		<data>
 		n57qDP4tZfLD1rCS43W0B4LQjzE=
+		</data>
+		<key>Podfile</key>
+		<data>
+		CNstpJTnCGXNtj1A0955O/Vzfe8=
 		</data>
 		<key>embedded.mobileprovision</key>
 		<data>
@@ -153,7 +188,7 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		j7+8M+x/YxHXWSooMPFREmw6IUg=
+		aSly72LmsadsNcFIcBKvDV1lins=
 		</data>
 		<key>BTSignInAndUpStoryboard.storyboardc/Info.plist</key>
 		<data>
@@ -226,6 +261,41 @@
 		<key>MBProgressHUD.bundle/success@2x.png</key>
 		<data>
 		bsnH0mTXMKgCiM75bjX4+3ARVAs=
+		</data>
+		<key>MJRefresh.bundle/arrow@2x.png</key>
+		<data>
+		5ZENFuDcEgHjDuL7tn7h97HeuSE=
+		</data>
+		<key>MJRefresh.bundle/en.lproj/Localizable.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			+MqdSIQkOmft3feFB6CbJQkGr7c=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>MJRefresh.bundle/zh-Hans.lproj/Localizable.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			DD5bNeaUTksFP2PkSNtokoJkKjU=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>MJRefresh.bundle/zh-Hant.lproj/Localizable.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			hjIzn4qLs8xLMnelxOeMouDSaZY=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>Podfile</key>
+		<data>
+		CNstpJTnCGXNtj1A0955O/Vzfe8=
 		</data>
 		<key>embedded.mobileprovision</key>
 		<data>

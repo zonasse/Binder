@@ -1,5 +1,6 @@
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/BTBookTagViewController.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/MBProgressHUD+MJ.o
+/Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/BTChangePasswordViewController.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/PinyinHelper.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/SDWebImageDecoder.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/SDWebImageManager.o
@@ -14,6 +15,7 @@
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/HanyuPinyinOutputFormat.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/BTSearchHistoryViewController.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/BTSignInViewController.o
+/Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/BTOpenDownloadedBookActionSheet.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/UIImage+WebP.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/UIImageView+HighlightedWebCache.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/BTSignUpViewController.o
@@ -40,6 +42,7 @@
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/BTVerifyEmailViewController.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/SDWebImageDownloader.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/UIImageView+WebCache.o
+/Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/MJChiBaoZiHeader.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/ChineseInclude.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/PinYinForObjc.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphoneos/Binder.build/Objects-normal/armv7/BTSearchHistoryCell.o

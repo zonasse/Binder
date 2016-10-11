@@ -10,6 +10,8 @@
 		4A6A2A7DC340921075D37383 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CA0377E3F1A799826DCC340 /* libPods.a */; };
 		E21773171DA3DC48002FA783 /* BookTag.plist in Resources */ = {isa = PBXBuildFile; fileRef = E21773161DA3DC48002FA783 /* BookTag.plist */; };
 		E217731D1DA48E0A002FA783 /* BTBookTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E217731C1DA48E0A002FA783 /* BTBookTagViewController.m */; };
+		E21A5B7F1DAB5D8900AE96EC /* BTChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E21A5B7E1DAB5D8900AE96EC /* BTChangePasswordViewController.m */; };
+		E21A5B821DABD32500AE96EC /* BTOpenDownloadedBookActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = E21A5B811DABD32500AE96EC /* BTOpenDownloadedBookActionSheet.m */; };
 		E227393C1D732AB4006D3D34 /* BTKindleBookCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E227393B1D732AB4006D3D34 /* BTKindleBookCell.m */; };
 		E229FB1E1DA384EF00574EAD /* guide.txt in Resources */ = {isa = PBXBuildFile; fileRef = E229FB1D1DA384EF00574EAD /* guide.txt */; };
 		E229FB211DA387E500574EAD /* BTBookLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E229FB201DA387E500574EAD /* BTBookLibraryViewController.m */; };
@@ -22,6 +24,8 @@
 		E22B8C4E1D71843A00A9976F /* BTKindleAssistantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E22B8C4D1D71843A00A9976F /* BTKindleAssistantViewController.m */; };
 		E22B8C5B1D7194E700A9976F /* UIView+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = E22B8C5A1D7194E700A9976F /* UIView+extension.m */; };
 		E22B8C5E1D72A48800A9976F /* BTBook.m in Sources */ = {isa = PBXBuildFile; fileRef = E22B8C5D1D72A48800A9976F /* BTBook.m */; };
+		E231A7811DAA6B140011B03A /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = E231A7801DAA6B140011B03A /* Podfile */; };
+		E231A7841DAA8EB80011B03A /* MJChiBaoZiHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = E231A7831DAA8EB80011B03A /* MJChiBaoZiHeader.m */; };
 		E24713311D7ABD510064BF6D /* ChineseInclude.m in Sources */ = {isa = PBXBuildFile; fileRef = E24713201D7ABD510064BF6D /* ChineseInclude.m */; };
 		E24713321D7ABD510064BF6D /* ChineseToPinyinResource.m in Sources */ = {isa = PBXBuildFile; fileRef = E24713221D7ABD510064BF6D /* ChineseToPinyinResource.m */; };
 		E24713331D7ABD510064BF6D /* HanyuPinyinOutputFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = E24713241D7ABD510064BF6D /* HanyuPinyinOutputFormat.m */; };
@@ -71,6 +75,10 @@
 		E21773161DA3DC48002FA783 /* BookTag.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BookTag.plist; sourceTree = "<group>"; };
 		E217731B1DA48E0A002FA783 /* BTBookTagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBookTagViewController.h; sourceTree = "<group>"; };
 		E217731C1DA48E0A002FA783 /* BTBookTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBookTagViewController.m; sourceTree = "<group>"; };
+		E21A5B7D1DAB5D8900AE96EC /* BTChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTChangePasswordViewController.h; sourceTree = "<group>"; };
+		E21A5B7E1DAB5D8900AE96EC /* BTChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTChangePasswordViewController.m; sourceTree = "<group>"; };
+		E21A5B801DABD32500AE96EC /* BTOpenDownloadedBookActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTOpenDownloadedBookActionSheet.h; sourceTree = "<group>"; };
+		E21A5B811DABD32500AE96EC /* BTOpenDownloadedBookActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTOpenDownloadedBookActionSheet.m; sourceTree = "<group>"; };
 		E227393A1D732AB4006D3D34 /* BTKindleBookCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTKindleBookCell.h; sourceTree = "<group>"; };
 		E227393B1D732AB4006D3D34 /* BTKindleBookCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTKindleBookCell.m; sourceTree = "<group>"; };
 		E229FB1D1DA384EF00574EAD /* guide.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = guide.txt; sourceTree = "<group>"; };
@@ -94,6 +102,9 @@
 		E22B8C5A1D7194E700A9976F /* UIView+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+extension.m"; sourceTree = "<group>"; };
 		E22B8C5C1D72A48800A9976F /* BTBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBook.h; sourceTree = "<group>"; };
 		E22B8C5D1D72A48800A9976F /* BTBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBook.m; sourceTree = "<group>"; };
+		E231A7801DAA6B140011B03A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		E231A7821DAA8EB80011B03A /* MJChiBaoZiHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJChiBaoZiHeader.h; sourceTree = "<group>"; };
+		E231A7831DAA8EB80011B03A /* MJChiBaoZiHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJChiBaoZiHeader.m; sourceTree = "<group>"; };
 		E24713181D7A632D0064BF6D /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../../PrefixHeader.pch; sourceTree = "<group>"; };
 		E247131F1D7ABD510064BF6D /* ChineseInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChineseInclude.h; sourceTree = "<group>"; };
 		E24713201D7ABD510064BF6D /* ChineseInclude.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChineseInclude.m; sourceTree = "<group>"; };
@@ -260,21 +271,21 @@
 				E22B8C4F1D7186FA00A9976F /* Controller */,
 				E22B8C501D7186FA00A9976F /* Model */,
 				E22B8C511D7186FA00A9976F /* View */,
-				E22B8C3B1D7182AB00A9976F /* Profile */,
-				E22B8C3F1D7182AB00A9976F /* KindleAssistant */,
-				E22B8C431D7182AB00A9976F /* KindleLibrary */,
+				E22B8C3B1D7182AB00A9976F /* Profile(我) */,
+				E22B8C3F1D7182AB00A9976F /* KindleAssistant(主页) */,
+				E22B8C431D7182AB00A9976F /* KindleLibrary(书库) */,
 			);
 			path = Main;
 			sourceTree = "<group>";
 		};
-		E22B8C3B1D7182AB00A9976F /* Profile */ = {
+		E22B8C3B1D7182AB00A9976F /* Profile(我) */ = {
 			isa = PBXGroup;
 			children = (
 				E22B8C3C1D7182AB00A9976F /* Controller */,
 				E22B8C3D1D7182AB00A9976F /* Model */,
 				E22B8C3E1D7182AB00A9976F /* View */,
 			);
-			name = Profile;
+			name = "Profile(我)";
 			path = Home;
 			sourceTree = "<group>";
 		};
@@ -301,13 +312,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		E22B8C3F1D7182AB00A9976F /* KindleAssistant */ = {
+		E22B8C3F1D7182AB00A9976F /* KindleAssistant(主页) */ = {
 			isa = PBXGroup;
 			children = (
 				E22B8C401D7182AB00A9976F /* Controller */,
 				E22B8C411D7182AB00A9976F /* Model */,
 				E22B8C421D7182AB00A9976F /* View */,
 			);
+			name = "KindleAssistant(主页)";
 			path = KindleAssistant;
 			sourceTree = "<group>";
 		};
@@ -346,17 +358,20 @@
 				E22B0BAE1D93F6BB00D51E4B /* BTBookDetailView.m */,
 				E22B0BB61D97AE1300D51E4B /* BTSearchHistoryCell.h */,
 				E22B0BB71D97AE1300D51E4B /* BTSearchHistoryCell.m */,
+				E21A5B801DABD32500AE96EC /* BTOpenDownloadedBookActionSheet.h */,
+				E21A5B811DABD32500AE96EC /* BTOpenDownloadedBookActionSheet.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		E22B8C431D7182AB00A9976F /* KindleLibrary */ = {
+		E22B8C431D7182AB00A9976F /* KindleLibrary(书库) */ = {
 			isa = PBXGroup;
 			children = (
 				E22B8C441D7182AB00A9976F /* Controller */,
 				E22B8C451D7182AB00A9976F /* Model */,
 				E22B8C461D7182AB00A9976F /* View */,
 			);
+			name = "KindleLibrary(书库)";
 			path = KindleLibrary;
 			sourceTree = "<group>";
 		};
@@ -388,6 +403,7 @@
 		E22B8C4B1D7182AB00A9976F /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				E231A7801DAA6B140011B03A /* Podfile */,
 				E22B8C251D71812A00A9976F /* AppDelegate.h */,
 				E22B8C261D71812A00A9976F /* AppDelegate.m */,
 				E24713181D7A632D0064BF6D /* PrefixHeader.pch */,
@@ -405,6 +421,8 @@
 				E247A36A1D8CDED30098B62E /* BTSignUpViewController.m */,
 				E247A36E1D8E6B870098B62E /* BTVerifyEmailViewController.h */,
 				E247A36F1D8E6B870098B62E /* BTVerifyEmailViewController.m */,
+				E21A5B7D1DAB5D8900AE96EC /* BTChangePasswordViewController.h */,
+				E21A5B7E1DAB5D8900AE96EC /* BTChangePasswordViewController.m */,
 				E247A36C1D8D227C0098B62E /* BTSignInAndUpStoryboard.storyboard */,
 			);
 			path = Controller;
@@ -420,6 +438,8 @@
 		E22B8C511D7186FA00A9976F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E231A7821DAA8EB80011B03A /* MJChiBaoZiHeader.h */,
+				E231A7831DAA8EB80011B03A /* MJChiBaoZiHeader.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -591,6 +611,7 @@
 				E247A3641D8CD0C90098B62E /* MBProgressHUD.bundle in Resources */,
 				E229FB1E1DA384EF00574EAD /* guide.txt in Resources */,
 				E247A36D1D8D227C0098B62E /* BTSignInAndUpStoryboard.storyboard in Resources */,
+				E231A7811DAA6B140011B03A /* Podfile in Resources */,
 				E22B8C2F1D71812A00A9976F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -652,6 +673,7 @@
 			files = (
 				E217731D1DA48E0A002FA783 /* BTBookTagViewController.m in Sources */,
 				E247A3631D8CD0C90098B62E /* MBProgressHUD+MJ.m in Sources */,
+				E21A5B7F1DAB5D8900AE96EC /* BTChangePasswordViewController.m in Sources */,
 				E24713371D7ABD510064BF6D /* PinyinHelper.m in Sources */,
 				E24920931D781C50009671EF /* SDWebImageDecoder.m in Sources */,
 				E24920961D781C50009671EF /* SDWebImageManager.m in Sources */,
@@ -666,6 +688,7 @@
 				E24713331D7ABD510064BF6D /* HanyuPinyinOutputFormat.m in Sources */,
 				E247A3731D9021C70098B62E /* BTSearchHistoryViewController.m in Sources */,
 				E247A3681D8CDEC50098B62E /* BTSignInViewController.m in Sources */,
+				E21A5B821DABD32500AE96EC /* BTOpenDownloadedBookActionSheet.m in Sources */,
 				E249209B1D781C50009671EF /* UIImage+WebP.m in Sources */,
 				E249209C1D781C50009671EF /* UIImageView+HighlightedWebCache.m in Sources */,
 				E247A36B1D8CDED30098B62E /* BTSignUpViewController.m in Sources */,
@@ -692,6 +715,7 @@
 				E247A3701D8E6B870098B62E /* BTVerifyEmailViewController.m in Sources */,
 				E24920941D781C50009671EF /* SDWebImageDownloader.m in Sources */,
 				E249209D1D781C50009671EF /* UIImageView+WebCache.m in Sources */,
+				E231A7841DAA8EB80011B03A /* MJChiBaoZiHeader.m in Sources */,
 				E24713311D7ABD510064BF6D /* ChineseInclude.m in Sources */,
 				E24713361D7ABD510064BF6D /* PinYinForObjc.m in Sources */,
 				E22B0BB81D97AE1300D51E4B /* BTSearchHistoryCell.m in Sources */,

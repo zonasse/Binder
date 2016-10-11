@@ -125,6 +125,100 @@
             </objects>
             <point key="canvasLocation" x="801" y="465"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="gk1-WO-T7A">
+            <objects>
+                <navigationController id="Pvo-3g-LmH" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="61L-PC-Pq3"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FZQ-4b-Xay">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Ulc-Gj-z9g" kind="relationship" relationship="rootViewController" id="jPx-gc-H95"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Sj-kg-QV3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="386" y="1132"/>
+        </scene>
+        <!--密码找回-->
+        <scene sceneID="gsr-ZD-k8g">
+            <objects>
+                <viewController id="Ulc-Gj-z9g" customClass="BTChangePasswordViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ZVr-6o-gKZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="84i-8s-jiy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TPG-OA-liZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="signInAndUpBg" translatesAutoresizingMaskIntoConstraints="NO" id="7Mo-Xw-KIL">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <view alpha="0.80000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kwX-N8-RR1">
+                                <rect key="frame" x="20" y="72" width="280" height="90"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-Mail" textAlignment="center" minimumFontSize="17" background="emailTextField" translatesAutoresizingMaskIntoConstraints="NO" id="os1-WS-0Zh">
+                                        <rect key="frame" x="26" y="8" width="228" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="SIk-b3-gEU"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NJf-YW-ss1">
+                                        <rect key="frame" x="26" y="52" width="228" height="30"/>
+                                        <state key="normal" title="确定" backgroundImage="timeline_new_status_background">
+                                            <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="FindPassword:" destination="Ulc-Gj-z9g" eventType="touchUpInside" id="29O-NU-F9m"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="os1-WS-0Zh" firstAttribute="leading" secondItem="kwX-N8-RR1" secondAttribute="leading" constant="26" id="FO1-iH-8Zi"/>
+                                    <constraint firstItem="os1-WS-0Zh" firstAttribute="centerX" secondItem="kwX-N8-RR1" secondAttribute="centerX" id="LpL-wQ-B3T"/>
+                                    <constraint firstItem="os1-WS-0Zh" firstAttribute="top" secondItem="kwX-N8-RR1" secondAttribute="topMargin" id="X8v-NQ-XPe"/>
+                                    <constraint firstItem="NJf-YW-ss1" firstAttribute="bottom" secondItem="kwX-N8-RR1" secondAttribute="bottomMargin" id="mYa-Yn-tlZ"/>
+                                    <constraint firstItem="NJf-YW-ss1" firstAttribute="trailing" secondItem="os1-WS-0Zh" secondAttribute="trailing" id="sRk-q1-zrx"/>
+                                    <constraint firstItem="NJf-YW-ss1" firstAttribute="top" secondItem="os1-WS-0Zh" secondAttribute="bottom" constant="9" id="vp7-f3-sCY"/>
+                                    <constraint firstItem="NJf-YW-ss1" firstAttribute="leading" secondItem="os1-WS-0Zh" secondAttribute="leading" id="ygK-hH-pId"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kwX-N8-RR1" firstAttribute="top" secondItem="ZVr-6o-gKZ" secondAttribute="bottom" constant="8" symbolic="YES" id="8XE-u1-wg8"/>
+                            <constraint firstAttribute="trailing" secondItem="7Mo-Xw-KIL" secondAttribute="trailing" id="B3o-VB-FSC"/>
+                            <constraint firstItem="7Mo-Xw-KIL" firstAttribute="top" secondItem="TPG-OA-liZ" secondAttribute="top" id="HF1-hS-0XZ"/>
+                            <constraint firstItem="84i-8s-jiy" firstAttribute="top" secondItem="7Mo-Xw-KIL" secondAttribute="bottom" id="KEf-Yf-qB6"/>
+                            <constraint firstItem="kwX-N8-RR1" firstAttribute="leading" secondItem="TPG-OA-liZ" secondAttribute="leadingMargin" constant="4" id="LEr-Mm-1L7"/>
+                            <constraint firstItem="84i-8s-jiy" firstAttribute="top" secondItem="kwX-N8-RR1" secondAttribute="bottom" constant="406" id="lCT-1c-CUA"/>
+                            <constraint firstItem="7Mo-Xw-KIL" firstAttribute="leading" secondItem="TPG-OA-liZ" secondAttribute="leading" id="lmx-EZ-uDs"/>
+                            <constraint firstItem="kwX-N8-RR1" firstAttribute="centerX" secondItem="7Mo-Xw-KIL" secondAttribute="centerX" id="xU1-jE-Mop"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="密码找回" id="bvn-4E-tjI">
+                        <barButtonItem key="leftBarButtonItem" image="back" id="Kvj-A9-5kg">
+                            <connections>
+                                <action selector="back:" destination="Ulc-Gj-z9g" id="EJB-va-s6I"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="emailText" destination="os1-WS-0Zh" id="Omv-gD-y4r"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6xb-fh-eA5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="801" y="1132"/>
+        </scene>
         <!--Verify Email View Controller-->
         <scene sceneID="ZyS-Vg-eYU">
             <objects>
@@ -275,7 +369,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N29-i4-BvM">
                                                     <rect key="frame" x="64" y="10" width="223" height="23"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kindle-logo" translatesAutoresizingMaskIntoConstraints="NO" id="Zze-Y5-FrH">
@@ -312,7 +406,7 @@
                                                     <rect key="frame" x="45" y="0.0" width="240" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="profile_0005_49-document---article-book-journal" id="yHI-IH-QJe">
@@ -334,7 +428,7 @@
                                                     <rect key="frame" x="44" y="0.0" width="241" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="profile_0004_1-setting---wrench" id="mFg-mv-rCs">
@@ -356,7 +450,7 @@
                                                     <rect key="frame" x="46" y="0.0" width="239" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="profile_0002_19-communication---chat-talk-bubble-more-dots" id="rBZ-Cf-qNm">
@@ -378,7 +472,7 @@
                                                     <rect key="frame" x="46" y="0.0" width="239" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="profile_0001_32-user---single" id="E9g-mY-Kx7">
@@ -400,7 +494,7 @@
                                                     <rect key="frame" x="46" y="0.0" width="239" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="profile_0003_4-setting---gear" id="Idg-eL-wsU">
@@ -422,7 +516,7 @@
                                                     <rect key="frame" x="45" y="0.0" width="260" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="profile_0000_19-gesture---double-click" id="JPu-9v-QIy">
@@ -492,9 +586,12 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="yef-Tm-eGx"/>
                                 </constraints>
-                                <state key="normal" title="忘记密码？">
+                                <state key="normal" title="找回密码">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <segue destination="Pvo-3g-LmH" kind="presentation" id="oLM-RN-VZT"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0TO-zT-3UZ">
                                 <rect key="frame" x="161" y="524" width="159" height="44"/>
@@ -582,6 +679,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="back" width="30" height="30"/>
         <image name="buttonSignIn" width="187" height="48"/>
         <image name="buttonSignUp" width="187" height="48"/>
         <image name="emailTextField" width="226" height="36"/>
@@ -596,5 +694,6 @@
         <image name="profile_0005_49-document---article-book-journal" width="15" height="16"/>
         <image name="signInAndUpBg" width="1858" height="2500"/>
         <image name="tabbar_message_center_selected" width="30" height="30"/>
+        <image name="timeline_new_status_background" width="1" height="35"/>
     </resources>
 </document>

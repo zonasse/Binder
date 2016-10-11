@@ -257,8 +257,8 @@
             
             //下载书籍
             
-//            NSString *bookBaseURL = [NSString stringWithFormat:@"http://15809m650x.iok.la%@",self.book.path];
             NSString *bookBaseURL = [NSString stringWithFormat:@"http://15809m650x.iok.la%@",self.book.path];
+//            NSString *bookBaseURL = [NSString stringWithFormat:@"http://localhost:8888%@",self.book.path];
             bookBaseURL = [bookBaseURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSURL *bookRequestURL = [NSURL URLWithString:bookBaseURL];
             
@@ -434,9 +434,6 @@
     
 }
 
-//- (void)bookImageViewClicked
-//{
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"showBookDetailView" object:self.book];
-//}
+
 
 @end
