@@ -11,7 +11,7 @@
 #import "BTBookLibraryViewController.h"
 #import "MJRefresh.h"
 #import "BTOpenDownloadedBookActionSheet.h"
-@interface BTKindleAssistantViewController ()<MFMailComposeViewControllerDelegate,UIAlertViewDelegate,UIDocumentInteractionControllerDelegate,UISearchBarDelegate,UISearchResultsUpdating,BTSearchHistoryViewControllerDelegate,UIActionSheetDelegate>
+@interface BTKindleAssistantViewController ()<MFMailComposeViewControllerDelegate,UIAlertViewDelegate,UIDocumentInteractionControllerDelegate,UISearchBarDelegate,UISearchResultsUpdating,BTSearchHistoryViewControllerDelegate,UIActionSheetDelegate,BTBookLibraryViewControllerDelegate>
 
 @property (nonatomic,strong) UIDocumentInteractionController *documentInteration;
 @property (nonatomic,strong) BTSearchViewController *searchController;
@@ -103,7 +103,7 @@
     //7.加载本地书籍
     [self loadLocalBooks];
     
-    //8.设置电子书打开时显示的alertView
+    //8.设置电子书打开时显示的actionSheet
     _actionSheet = [[BTOpenDownloadedBookActionSheet alloc] initWithTitle:@"文件选项" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"预览(txt,pdf)",@"其他应用", nil];
 
 }
@@ -249,7 +249,7 @@
         textView.text = book.category;
     }
     
-    CGSize textSize = [textView.text sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(textView.width, 2000) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize textSize = [textView.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(textView.width, 2000) lineBreakMode:UILineBreakModeWordWrap];
     
     textView.height = textSize.height + 10;
 //    textView.y -= textSize.height;
@@ -476,7 +476,7 @@
 {
     
     
-    
+    self.normalFooterView.text = @"";
     //监测网络
     if (kNetworkNotReachability) {
         [MBProgressHUD showError:@"当前没有可用网络"];
@@ -490,8 +490,22 @@
     if (searchController.searchBar.text.length == 0 && searchController.active == YES) {
         
         [[NSNotificationCenter defaultCenter]postNotificationName:@"searchStart" object:nil];
-        [self.view addSubview:self.searchHistoryController.view];
+        
+        
+        //清空搜索数组
+        if (_searchBooks != nil) {
+            [_searchBooks removeAllObjects];
+            _searchBooks = [[NSMutableArray alloc] init];
+        }else{
+            _searchBooks = [[NSMutableArray alloc] init];
+        }
         [self.tableView reloadData];
+        [self.view addSubview:self.searchHistoryController.view];
+        
+        
+        
+        _shouldSearch = YES;
+        
         return;
         
     }else{
@@ -499,31 +513,28 @@
         [self.searchHistoryController.view removeFromSuperview];
     }
     
-    
     if (_shouldSearch == NO) {
-        
-        
-        
-        self.normalFooterView.text = @"";
         _shouldSearch = YES;
         return;
-    }
-    
-    //显示搜索进程指示器
-    if (self.searchController.active) {
-        
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"searchStart" object:nil];
-        [_indicatorView startAnimating];
-        [self.view addSubview:_indicatorView];
     }
     //清空搜索数组
     if (_searchBooks != nil) {
         [_searchBooks removeAllObjects];
         _searchBooks = [[NSMutableArray alloc] init];
-        [self.tableView reloadData];
     }else{
         _searchBooks = [[NSMutableArray alloc] init];
     }
+    [self.tableView reloadData];
+    //显示搜索进程指示器
+    if (self.searchController.active) {
+        if (self.tableView.mj_footer) {
+            self.tableView.mj_footer = nil;
+        }
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"searchStart" object:nil];
+        [_indicatorView startAnimating];
+        [self.view addSubview:_indicatorView];
+    }
+   
     
     
     //请求管理者
@@ -686,7 +697,7 @@
     
     BTBookLibraryViewController *bookLibraryVC = [[BTBookLibraryViewController alloc] init];
     UINavigationController *bookLibraryNAV = [[UINavigationController alloc ]initWithRootViewController:bookLibraryVC];
-    
+    bookLibraryVC.delegate = self;
     
     [self presentViewController:bookLibraryNAV animated:YES completion:^{
     }];
@@ -697,4 +708,10 @@
     
     
 }
+
+- (void)bookLibraryVCDidDismissed
+{
+    [self loadLocalBooks];
+}
+
 @end

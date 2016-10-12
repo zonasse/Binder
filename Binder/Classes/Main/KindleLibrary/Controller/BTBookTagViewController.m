@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(openDownloadedBookWithNotification:) name:@"openDownloadedBook" object:nil];
-    //设置电子书打开时显示的alertView
+    //设置电子书打开时显示的actionSheet
     if (!_actionSheet) {
         
         
@@ -131,6 +131,8 @@
     
 }
 
+
+
 - (void)searchBooks
 {
     
@@ -144,7 +146,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         //    [self searchBooksWithURLAddress:@"http://localhost:8888/www/BulletApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];http://15809m650x.iok.la/BinderApi/searchBookLibrary.php
     
-        [manager POST:@"http://15809m650x.iok.la/BinderApi/searchBookLibrary.php" parameters:@{@"book":self.bookTag,@"bookRecord":[NSNumber numberWithInteger:_resultBooksArray.count]} progress:^(NSProgress * _Nonnull uploadProgress) {
+        [manager POST:@"http://15809m650x.iok.la/BinderApi/searchBookLibrary.php" parameters:@{@"bookTag":self.bookTag,@"bookRecord":[NSNumber numberWithInteger:_resultBooksArray.count]} progress:^(NSProgress * _Nonnull uploadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -339,5 +341,7 @@
 {
     [_bookDetailViewCover removeFromSuperview];
 }
+
+
 
 @end

@@ -1,5 +1,6 @@
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/BTBookTagViewController.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/MBProgressHUD+MJ.o
+/Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/BTChangePasswordViewController.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/PinyinHelper.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/SDWebImageDecoder.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/SDWebImageManager.o
@@ -14,10 +15,10 @@
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/HanyuPinyinOutputFormat.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/BTSearchHistoryViewController.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/BTSignInViewController.o
+/Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/BTOpenDownloadedBookActionSheet.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/UIImage+WebP.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/UIImageView+HighlightedWebCache.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/BTSignUpViewController.o
-/Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/BTBookTagCollectionCell.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/AppDelegate.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/UIView+extension.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/UIButton+WebCache.o
@@ -41,6 +42,7 @@
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/BTVerifyEmailViewController.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/SDWebImageDownloader.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/UIImageView+WebCache.o
+/Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/MJChiBaoZiHeader.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/ChineseInclude.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/PinYinForObjc.o
 /Users/Jaccob/Documents/Binder/Build/Intermediates/Binder.build/Debug-iphonesimulator/Binder.build/Objects-normal/x86_64/BTSearchHistoryCell.o

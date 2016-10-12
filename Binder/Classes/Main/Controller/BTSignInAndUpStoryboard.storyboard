@@ -18,6 +18,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="signInAndUpBg" translatesAutoresizingMaskIntoConstraints="NO" id="Hn0-1C-9aH">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
                             <imageView userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_background" translatesAutoresizingMaskIntoConstraints="NO" id="nZ4-IL-Ahj">
                                 <rect key="frame" x="30" y="64" width="260" height="380"/>
                             </imageView>
@@ -73,9 +76,6 @@
                                     <action selector="signUpButton:" destination="oqn-gP-HOv" eventType="touchUpInside" id="rQi-Vt-yYB"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="signInAndUpBg" translatesAutoresizingMaskIntoConstraints="NO" id="Hn0-1C-9aH">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>

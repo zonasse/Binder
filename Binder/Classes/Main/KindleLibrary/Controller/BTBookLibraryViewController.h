@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol BTBookLibraryViewControllerDelegate <NSObject>
+
+- (void)bookLibraryVCDidDismissed;
+
+@end
 
 @interface BTBookLibraryViewController : UIViewController
+@property (nonatomic,assign) id<BTBookLibraryViewControllerDelegate> delegate;
 
 @end

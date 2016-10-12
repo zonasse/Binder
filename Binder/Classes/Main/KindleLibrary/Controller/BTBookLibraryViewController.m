@@ -204,4 +204,11 @@ static NSString *const footerId = @"footerId";
     bookTagVC.title = bookTag;
 }
 
+- (void)dealloc
+{
+    if ([self.delegate respondsToSelector:@selector(bookLibraryVCDidDismissed)]) {
+        [self.delegate bookLibraryVCDidDismissed];
+    }
+}
+
 @end

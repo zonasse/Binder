@@ -142,7 +142,7 @@
                     [MBProgressHUD hideHUD];
                     
                     [MBProgressHUD showSuccess:@"更改成功"];
-                    _kindleEmailCellLabel.text = [NSString stringWithFormat:@"kindle邮箱:%@",[user objectForKey:@"kindleEmail"]];
+                    _kindleEmailCellLabel.text = [NSString stringWithFormat:@"%@",[user objectForKey:@"kindleEmail"]];
                 }else{
                     [MBProgressHUD hideHUD];
                     [MBProgressHUD showError:@"更改失败，请稍后重试"];

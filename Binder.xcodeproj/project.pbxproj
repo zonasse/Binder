@@ -72,6 +72,7 @@
 		4B58FAF8997860304B2587B2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		4C0EF943891CF2231A5BE3D8 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		4CA0377E3F1A799826DCC340 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E21058581DADFD8A00D2E159 /* Binder.profdata */ = {isa = PBXFileReference; lastKnownFileType = file; path = Binder.profdata; sourceTree = "<group>"; };
 		E21773161DA3DC48002FA783 /* BookTag.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BookTag.plist; sourceTree = "<group>"; };
 		E217731B1DA48E0A002FA783 /* BTBookTagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTBookTagViewController.h; sourceTree = "<group>"; };
 		E217731C1DA48E0A002FA783 /* BTBookTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTBookTagViewController.m; sourceTree = "<group>"; };
@@ -217,6 +218,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E21058571DADFD8A00D2E159 /* OptimizationProfiles */ = {
+			isa = PBXGroup;
+			children = (
+				E21058581DADFD8A00D2E159 /* Binder.profdata */,
+			);
+			path = OptimizationProfiles;
+			sourceTree = "<group>";
+		};
 		E22B8C161D71812900A9976F = {
 			isa = PBXGroup;
 			children = (
@@ -224,6 +233,7 @@
 				E22B8C201D71812A00A9976F /* Products */,
 				22EDE8438EF9C5A9E6195CA4 /* Pods */,
 				A828F359986463249E5E97A1 /* Frameworks */,
+				E21058571DADFD8A00D2E159 /* OptimizationProfiles */,
 			);
 			sourceTree = "<group>";
 		};
@@ -814,14 +824,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/PrefixHeader.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Binder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.developer.jaccob.iOS.Bullet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.developer.jaccob.iOS.Binder;
 				PRODUCT_NAME = Binder;
 				PROVISIONING_PROFILE = "";
 			};
@@ -833,13 +844,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Binder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.developer.jaccob.iOS.Bullet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.developer.jaccob.iOS.Binder;
 				PRODUCT_NAME = Binder;
 				PROVISIONING_PROFILE = "";
 			};
