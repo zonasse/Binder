@@ -47,7 +47,7 @@
     rssSendButton.titleLabel.font = [UIFont fontWithName:@"Marker Felt" size:12.0];
     [rssSendButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [rssSendButton addTarget:self action:@selector(rssSend) forControlEvents:UIControlEventTouchUpInside];
-    [rssSendButton setImage:[UIImage imageNamed:@"cellBottom_0000_Street-Sign-[address,direction,location,road-sign,signpost,street-sign]"] forState:UIControlStateNormal];
+    [rssSendButton setImage:[UIImage imageNamed:@"profile_0186_Sign-Post"] forState:UIControlStateNormal];
     
     
     UIView *line = [[UIView alloc ] initWithFrame:CGRectMake(_bottomView.width * 0.5 - 0.5 , 0, 1, bottomViewHeight)];
@@ -59,7 +59,7 @@
 
     [kindleBargainPriceButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [kindleBargainPriceButton addTarget:self action:@selector(showKindleBargainPriceBookViewController) forControlEvents:UIControlEventTouchUpInside];
-    [kindleBargainPriceButton setImage:[UIImage imageNamed:@"cellBottom_0001_Money-[account,balance,cash,coin,currency,dollar,financial,money,shopping]"] forState:UIControlStateNormal];
+    [kindleBargainPriceButton setImage:[UIImage imageNamed:@"profile_0073_Shopping-Cart"] forState:UIControlStateNormal];
     
     [_bottomView addSubview:rssSendButton];
     [_bottomView addSubview:kindleBargainPriceButton];

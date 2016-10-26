@@ -66,6 +66,7 @@
 		E249209D1D781C50009671EF /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E249208C1D781C50009671EF /* UIImageView+WebCache.m */; };
 		E249209E1D781C50009671EF /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E249208E1D781C50009671EF /* UIView+WebCacheOperation.m */; };
 		E29207A11D77058D0054B800 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E29207A01D77058D0054B800 /* MessageUI.framework */; };
+		E299E77A1DB20CE9001F0CC7 /* BTAdviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E299E7791DB20CE9001F0CC7 /* BTAdviceViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -183,6 +184,8 @@
 		E249208D1D781C50009671EF /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		E249208E1D781C50009671EF /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		E29207A01D77058D0054B800 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		E299E7781DB20CE9001F0CC7 /* BTAdviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAdviceViewController.h; sourceTree = "<group>"; };
+		E299E7791DB20CE9001F0CC7 /* BTAdviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAdviceViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -304,6 +307,8 @@
 			children = (
 				E247A3741D921CEE0098B62E /* BTProfileViewController.h */,
 				E247A3751D921CEE0098B62E /* BTProfileViewController.m */,
+				E299E7781DB20CE9001F0CC7 /* BTAdviceViewController.h */,
+				E299E7791DB20CE9001F0CC7 /* BTAdviceViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -683,6 +688,7 @@
 			files = (
 				E217731D1DA48E0A002FA783 /* BTBookTagViewController.m in Sources */,
 				E247A3631D8CD0C90098B62E /* MBProgressHUD+MJ.m in Sources */,
+				E299E77A1DB20CE9001F0CC7 /* BTAdviceViewController.m in Sources */,
 				E21A5B7F1DAB5D8900AE96EC /* BTChangePasswordViewController.m in Sources */,
 				E24713371D7ABD510064BF6D /* PinyinHelper.m in Sources */,
 				E24920931D781C50009671EF /* SDWebImageDecoder.m in Sources */,

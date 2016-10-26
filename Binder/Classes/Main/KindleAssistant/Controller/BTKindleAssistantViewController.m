@@ -62,16 +62,16 @@
     
     UIButton *toggleToLeft = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
     [toggleToLeft addTarget:self action:@selector(showLeftController) forControlEvents:UIControlEventTouchUpInside];
-    [toggleToLeft setImage:[UIImage imageNamed:@"left_navItem_normal"] forState:UIControlStateNormal];
-    [toggleToLeft setImage:[UIImage imageNamed:@"left_navItem_highlited"] forState:UIControlStateHighlighted];
+    [toggleToLeft setImage:[UIImage imageNamed:@"profile_0007_Drupal"] forState:UIControlStateNormal];
+    [toggleToLeft setImage:[UIImage imageNamed:@"profile_0007_Drupal"] forState:UIControlStateHighlighted];
     UIBarButtonItem *toggleToLeftButton = [[UIBarButtonItem alloc] initWithCustomView:toggleToLeft];
     self.navigationItem.leftBarButtonItem = toggleToLeftButton;
     
     //4.设置导航栏右侧按钮
     UIButton *toggleToRight = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
     [toggleToRight addTarget:self action:@selector(showBooksTag) forControlEvents:UIControlEventTouchUpInside];
-    [toggleToRight setImage:[UIImage imageNamed:@"right_navItem_normal"] forState:UIControlStateNormal];
-    [toggleToRight setImage:[UIImage imageNamed:@"right_navItem_highlited"] forState:UIControlStateHighlighted];
+    [toggleToRight setImage:[UIImage imageNamed:@"profile_0007_Books"] forState:UIControlStateNormal];
+    [toggleToRight setImage:[UIImage imageNamed:@"profile_0007_Books"] forState:UIControlStateHighlighted];
 
     
     UIBarButtonItem *toggleToRightButton = [[UIBarButtonItem alloc] initWithCustomView:toggleToRight];
@@ -238,7 +238,7 @@
     _bookDetailViewCover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, UIScreenHeight)];
     _bookDetailViewCover.backgroundColor = [UIColor lightGrayColor];
     _bookDetailViewCover.alpha = 0.95;
-    
+    [_bookDetailViewCover addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeBookDetailViewCover)]];
 
     
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(10, UIScreenHeight * 0.2, UIScreenWidth - 20, 30) ];
@@ -255,14 +255,14 @@
 //    textView.y -= textSize.height;
     textView.editable = NO;
     
-    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(60, UIScreenHeight - 64, UIScreenWidth - 120, 44)];
-    closeButton.backgroundColor = [UIColor colorWithRed:237/256.0 green:215/256.0 blue:176/256.0 alpha:1.0];
-    
-    [closeButton setTitle:@"确定" forState:UIControlStateNormal];
-    [closeButton addTarget:self action:@selector(closeBookDetailViewCover) forControlEvents:UIControlEventTouchUpInside];
-    
+//    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(60, UIScreenHeight - 64, UIScreenWidth - 120, 44)];
+//    closeButton.backgroundColor = [UIColor colorWithRed:237/256.0 green:215/256.0 blue:176/256.0 alpha:1.0];
+//    
+//    [closeButton setTitle:@"确定" forState:UIControlStateNormal];
+//    [closeButton addTarget:self action:@selector(closeBookDetailViewCover) forControlEvents:UIControlEventTouchUpInside];
+//    
     [_bookDetailViewCover addSubview:textView];
-    [_bookDetailViewCover addSubview:closeButton];
+//    [_bookDetailViewCover addSubview:closeButton];
     
     [ShareApp.window addSubview:_bookDetailViewCover];
     
@@ -442,6 +442,22 @@
  */
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    //清空搜索数组
+    if (_searchBooks != nil) {
+        [_searchBooks removeAllObjects];
+        _searchBooks = [[NSMutableArray alloc] init];
+    }else{
+        _searchBooks = [[NSMutableArray alloc] init];
+    }
+    //开始搜索
+    NSString *book = self.searchController.searchBar.text;
+    
+    //向私人服务器发送搜索请求
+    
+    [self searchBooksWithURLAddress:@"http://15809m650x.iok.la/BinderApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
+
+    
+    
     
     NSArray *tempArray = [[NSArray alloc] init];
     //将搜索记录添加进搜索历史记录
@@ -457,6 +473,7 @@
             }
         }];
     }
+    
     
     if (historyExist) {
         return;

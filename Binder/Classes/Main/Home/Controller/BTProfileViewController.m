@@ -7,16 +7,12 @@
 //
 
 #import "BTProfileViewController.h"
+#import "BTAdviceViewController.h"
 @interface BTProfileViewController ()<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableViewCell *accountCell;
-//@property (weak, nonatomic) IBOutlet UILabel *userEmail;
-//@property (weak, nonatomic) IBOutlet UILabel *kindleEmail;
-//- (IBAction)changeKindleEmail:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UILabel *kindleEmailCellLabel;
-
-
 @property (nonatomic,strong) UIView *cover;
-//@property (nonatomic,strong) BTContainerViewController *containerVC;
 @end
 
 @implementation BTProfileViewController
@@ -33,6 +29,7 @@
     _accountCell.textLabel.textColor = [UIColor colorWithRed:228/256.0 green:181/256.0 blue:15/256.0 alpha:1.0];
     
     _kindleEmailCellLabel.text = [user objectForKey:@"kindleEmail"];
+    _kindleEmailCellLabel.font = [UIFont systemFontOfSize:14.0];
     _kindleEmailCellLabel.adjustsFontSizeToFitWidth = YES;
 
     
@@ -65,7 +62,7 @@
                 _cover.backgroundColor = [UIColor lightGrayColor];
                 _cover.alpha = 0.95;
                 
-                UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 20, UIScreenWidth - 20, UIScreenHeight - 20 - 88) ];
+                UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 20, UIScreenWidth - 20, UIScreenHeight - 20 - 68) ];
 //                NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding (kCFStringEncodingGB_18030_2000);
                 
                 textView.text = [NSString stringWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"guide.txt" ofType:nil] encoding:NSUTF8StringEncoding error:nil];
@@ -84,29 +81,23 @@
                 
             }
                 break;
-            case 1://小工具
+            case 1://我的记录
             {
                 
             }
                 break;
-                
-            case 2://找不到书？反馈
+            case 2://反馈
             {
+                BTAdviceViewController *adviceVC =  [[BTAdviceViewController alloc] init];
+                
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:adviceVC];
+                [self presentViewController:nav animated:YES completion:^{
+                    
+                }];
                 
             }
                 break;
-            case 3://关于作者
-            {
-                
-            }
-                break;
-            case 4://设置
-            {
-                
-            }
-                break;
-                
-            case 5://注销
+            case 3://注销
             {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"确定注销吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
                 alertView.tag = 1;

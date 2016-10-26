@@ -73,7 +73,7 @@
         //已下载
         [_downloadButton setTitle:@"  打开" forState:UIControlStateNormal];
         [_downloadButton setTitle:@"  打开" forState:UIControlStateHighlighted];
-        [_downloadButton setImage:[UIImage imageNamed:@"cellBottom_0002_Book-Checked-[book,checked,reading]"] forState:UIControlStateNormal];
+        [_downloadButton setImage:[UIImage imageNamed:@"profile_0005_Book"] forState:UIControlStateNormal];
         
     
     }else if(_book.bookStatus == btBookStatusNone){
@@ -82,7 +82,7 @@
     
         [_downloadButton setTitle:@"  下载" forState:UIControlStateNormal];
 
-        [_downloadButton setImage:[UIImage imageNamed:@"cellBottom_0003_Book-Download-[book,download,reading]"] forState:UIControlStateNormal];
+        [_downloadButton setImage:[UIImage imageNamed:@"profile_0006_Download"] forState:UIControlStateNormal];
   
         
     }
@@ -166,7 +166,7 @@
       
         //创建发送到kindle button
         self.bookSendToKindleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0 , _replaceContentView.width / 3, bottomToolBarHeight - 1)];
-        [_bookSendToKindleButton setImage:[UIImage imageNamed:@"cellBottom_0004_Send-[communication,paper-airplane,send]"] forState:UIControlStateNormal];
+        [_bookSendToKindleButton setImage:[UIImage imageNamed:@"profile_0038_Cloud-Upload"] forState:UIControlStateNormal];
 
         [_bookSendToKindleButton setTitle:@"kindle" forState:UIControlStateNormal];
         _bookSendToKindleButton.titleLabel.font = font;
@@ -186,7 +186,7 @@
         
         //创建在amazon中查找button
         self.searchInAmazonButton = [[UIButton alloc] initWithFrame:CGRectMake(self.replaceContentView.width * 2 / 3, 0, _bookSendToKindleButton.width, _bookSendToKindleButton.height)];
-        [self.searchInAmazonButton setImage:[UIImage imageNamed:@"cellBottom_0000_1325"] forState:UIControlStateNormal];
+        [self.searchInAmazonButton setImage:[UIImage imageNamed:@"profile_0043_Paperclip"] forState:UIControlStateNormal];
       
         [self.searchInAmazonButton setTitle:@"amazon" forState:UIControlStateNormal];
         
@@ -325,7 +325,7 @@
                                     [_hideView removeFromSuperview];
                                     _downloadButton.enabled = YES;
                                     [_downloadButton setTitle:@" 打开" forState:UIControlStateNormal];
-                                    [_downloadButton setImage:[UIImage imageNamed:@"cellBottom_0002_Book-Checked-[book,checked,reading]"] forState:UIControlStateNormal];
+                                    [_downloadButton setImage:[UIImage imageNamed:@"mini_0000s_0007_Book"] forState:UIControlStateNormal];
                                     _book.bookStatus = btBookStatusDownloaded;
                                 });
                             }
@@ -361,7 +361,7 @@
     [self.downloadTask cancel];
     _book.bookStatus = btBookStatusNone;
     [_downloadButton setTitle:@"下载" forState:UIControlStateNormal];
-     [_downloadButton setImage:[UIImage imageNamed:@"cellBottom_0003_Book-Download-[book,download,reading]"] forState:UIControlStateNormal];
+    [_downloadButton setImage:[UIImage imageNamed:@"mini_0000s_0035_Download"] forState:UIControlStateNormal];
     [_hideView removeFromSuperview];
     
 }

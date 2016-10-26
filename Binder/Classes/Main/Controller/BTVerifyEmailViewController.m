@@ -110,8 +110,11 @@
            
            UIStoryboard *signInAndUpSB = [UIStoryboard storyboardWithName:@"BTSignInAndUpStoryboard" bundle:nil];
            BTProfileViewController *profileVC = [signInAndUpSB instantiateViewControllerWithIdentifier:@"profile"];
+           UINavigationController *profileVCNAV = [[UINavigationController alloc] initWithRootViewController:profileVC];
            
-           ShareApp.drawerController = [[MMDrawerController alloc] initWithCenterViewController:fatherVC leftDrawerViewController:profileVC];
+           
+ 
+           ShareApp.drawerController = [[MMDrawerController alloc] initWithCenterViewController:fatherVC leftDrawerViewController:profileVCNAV];
            ShareApp.drawerController.view.backgroundColor = [UIColor whiteColor];
            [ShareApp.drawerController setShowsShadow:YES]; // 是否显示阴影效果
            ShareApp.drawerController.maximumLeftDrawerWidth = UIScreenWidth * 7/8; // 左边拉开的最大宽度

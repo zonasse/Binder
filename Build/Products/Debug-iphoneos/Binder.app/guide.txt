@@ -1,0 +1,28 @@
+kindle电子书推送教程及有关电子书格式说明
+
+1.绑定自己的kindle邮箱:
+
+   登录www.amazon.cn选择->管理我的内容和设备->我的设备 即可看到kindle默认的收件邮箱, Binder默认您绑定的kindle收件邮箱为您的 Binder 登录账号后接@kindle.cn,如有出入请自行修改，确保一致。
+
+2.添加Binder发件邮箱到您认可的发件邮箱列表中
+
+   登录www.amazon.cn选择->管理我的内容和设备->设置->个人文档设置->已认可的发件人电子邮箱列表, 添加Binder发件邮箱 juniorobserver@foxmail.com 即可。
+
+3.kindle支持的电子书格式
+
+	Microsoft Word (.DOC, .DOCX)
+	HTML (.HTML, .HTM)
+	RTF (.RTF)
+ 	Text (.TXT)
+	JPEG (.JPEG, .JPG)
+	Kindle格式 (.MOBI, .AZW)
+	GIF (.GIF)
+	PNG (.PNG)
+	BMP (.BMP)
+	PDF (.PDF)
+
+4.特殊格式说明
+	mobi为kindle特有格式,若在手机上浏览请至App Store下载kindle官方app
+	epub格式可用iBooks浏览
+
+
