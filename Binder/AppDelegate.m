@@ -79,15 +79,9 @@
         
        
     }
-   
     
-    
-
-    
-    
-    return YES;
+   return YES;
 }
-
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -136,6 +130,8 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+
+    //网络监听中断
     AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager] ;
     [manager stopMonitoring];
 }

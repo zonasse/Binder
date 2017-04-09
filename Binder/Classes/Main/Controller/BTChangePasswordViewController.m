@@ -9,7 +9,6 @@
 #import "BTChangePasswordViewController.h"
 
 @interface BTChangePasswordViewController ()
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControll;
 @property (weak, nonatomic) IBOutlet UITextField *emailText;
 
 @end

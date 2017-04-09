@@ -27,7 +27,7 @@
 #import "Masonry.h"
 #import "UIView+extension.h"
 #import "ASProgressPopUpView.h"
-
+#import <CoreData/CoreData.h>
 
 #import "AppDelegate.h"
 #import "BTKindleAssistantFatherViewController.h"

@@ -11,6 +11,8 @@
 #import "BTBookLibraryViewController.h"
 #import "MJRefresh.h"
 #import "BTOpenDownloadedBookActionSheet.h"
+#import "BTBookBrowser.h"
+#import "BTBookBrowserViewController.h"
 @interface BTKindleAssistantViewController ()<MFMailComposeViewControllerDelegate,UIAlertViewDelegate,UIDocumentInteractionControllerDelegate,UISearchBarDelegate,UISearchResultsUpdating,BTSearchHistoryViewControllerDelegate,UIActionSheetDelegate,BTBookLibraryViewControllerDelegate>
 
 @property (nonatomic,strong) UIDocumentInteractionController *documentInteration;
@@ -26,9 +28,13 @@
 @property (nonatomic,strong) BTOpenDownloadedBookActionSheet *actionSheet;
 //书籍详细信息遮盖
 @property (nonatomic,strong) UIView *bookDetailViewCover;
+//书籍浏览器
+@property (nonatomic,strong) BTBookBrowser *bookBrowser;
+
 @end
 
 @implementation BTKindleAssistantViewController
+
 #pragma mark -- 系统方法
 - (void)viewDidLoad
 {
@@ -50,10 +56,10 @@
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     //2.设置通知项
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(openDownloadedBookWithNotification:) name:@"openDownloadedBook" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(openDownloadedBookWithNotification:) name:@"openDownloadedBook" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(findInAmazon:) name:@"findInAmazon" object:nil];
-   
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(jumpToBookBrowser) name:@"bookPreparedWorkFinished" object:nil];
     
     //3.设置导航栏左侧按钮
 
@@ -105,7 +111,11 @@
     
     //8.设置电子书打开时显示的actionSheet
     _actionSheet = [[BTOpenDownloadedBookActionSheet alloc] initWithTitle:@"文件选项" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"预览(txt,pdf)",@"其他应用", nil];
-
+    BTBook *book = [[BTBook alloc] init];
+    book.title = @"碧血剑";
+    book.suffix = @"txt";
+    BTBookBrowser *bookBrowser = [[BTBookBrowser alloc ]initWithBook:book];
+    _bookBrowser = bookBrowser;
 }
 
 
@@ -628,61 +638,82 @@
 {
 
     BTBook *book = notification.object;
-    [_actionSheet showInView:self.view];
-    _actionSheet.book = book;
+    //打开书籍
+    NSString *bookFullName = [book.title stringByAppendingFormat:@".%@",book.suffix];
+    NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
+        [MBProgressHUD showMessage:@"正在处理书籍..."];
+        
+        
+        _bookBrowser = [[BTBookBrowser alloc ]init];
+        _bookBrowser.book = book;
+
+        
+        
+        
+    }
+
+//    [_actionSheet showInView:self.view];
+//    _actionSheet.book = book;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)jumpToBookBrowser
 {
-    [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(openDownloadedBookWithNotification:) name:@"openDownloadedBook" object:nil];
+    //    [MBProgressHUD hideHUD];
+    
+    BTBookBrowserViewController *bookBrowserViewController = [[BTBookBrowserViewController alloc] init];
+        bookBrowserViewController.browser = _bookBrowser;
+    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:bookBrowserViewController];
 
-
+    [self presentViewController:navVC animated:YES completion:^{
+        
+    }];
+    
 }
-
-
 
 /**
  *  打开书籍ActionSheet的代理方法
  */
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *bookFullName = [_actionSheet.book.title stringByAppendingFormat:@".%@",_actionSheet.book.suffix];
-    NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
-        _documentInteration = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
-        _documentInteration.delegate = self;
-    
-    }
-    switch (buttonIndex) {
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    
+//    NSString *bookFullName = [_actionSheet.book.title stringByAppendingFormat:@".%@",_actionSheet.book.suffix];
+//    NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
+//    
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
+//        _documentInteration = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+//        _documentInteration.delegate = self;
+//    
+//    }
+//    switch (buttonIndex) {
+//
+//        case 0:
+//        {
+//             //预览
+//            [_documentInteration presentPreviewAnimated:YES];
+//        }
+//            break;
+//        case 1:
+//        {
+//            //其他应用
+//            [_documentInteration presentOpenInMenuFromRect:self.view.bounds inView:self.view animated:YES];
+//            
+//            
+//            
+//        }
+//            break;
+//
+//        default:
+//            break;
+//    }
+//    
+//}
 
-        case 0:
-        {
-             //预览
-            [_documentInteration presentPreviewAnimated:YES];
-        }
-            break;
-        case 1:
-        {
-            //其他应用
-            [_documentInteration presentOpenInMenuFromRect:self.view.bounds inView:self.view animated:YES];
-            
-            
-            
-        }
-            break;
-
-        default:
-            break;
-    }
-    
-}
-
-- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
-{
-    return self;
-}
+//- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
+//{
+//    return self;
+//}
 
 /**
  *  亚马逊按钮点击
@@ -712,6 +743,8 @@
 - (void)showBooksTag
 {
     
+        
+
     BTBookLibraryViewController *bookLibraryVC = [[BTBookLibraryViewController alloc] init];
     UINavigationController *bookLibraryNAV = [[UINavigationController alloc ]initWithRootViewController:bookLibraryVC];
     bookLibraryVC.delegate = self;

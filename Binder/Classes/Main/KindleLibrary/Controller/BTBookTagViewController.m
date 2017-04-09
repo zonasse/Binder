@@ -244,47 +244,56 @@
 {
     
     BTBook *book = notification.object;
-    _actionSheet.book = book;
-    [_actionSheet showInView:self.view];
+    //打开书籍
+    NSString *bookFullName = [book.title stringByAppendingFormat:@".%@",book.suffix];
+    NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
+        
+    }
+//    _actionSheet.book = book;
+//    [_actionSheet showInView:self.view];
 }
 
 
 /**
  *  打开书籍ActionSheet的代理方法
  */
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *bookFullName = [_actionSheet.book.title stringByAppendingFormat:@".%@",_actionSheet.book.suffix];
-    NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
-        _documentInteration = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
-        _documentInteration.delegate = self;
-        
-    }
-    switch (buttonIndex) {
-   
-        case 0:
-        {
-            //预览
-            [_documentInteration presentPreviewAnimated:YES];
-        }
-            break;
-        case 1:
-        {
-            //其他应用
-            [_documentInteration presentOpenInMenuFromRect:self.view.bounds inView:self.view animated:YES];
-            
-            
-            
-        }
-            break;
-            
-        default:
-            break;
-    }
-    
-}
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    NSString *bookFullName = [_actionSheet.book.title stringByAppendingFormat:@".%@",_actionSheet.book.suffix];
+//    NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
+//    
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
+////        _documentInteration = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+////        _documentInteration.delegate = self;
+//        
+//    }
+////    switch (buttonIndex) {
+////   
+////        case 0:
+////        {
+////            
+////            
+//////            //预览
+//////            [_documentInteration presentPreviewAnimated:YES];
+////        }
+////            break;
+////        case 1:
+////        {
+//////            //其他应用
+//////            [_documentInteration presentOpenInMenuFromRect:self.view.bounds inView:self.view animated:YES];
+////            
+////            
+////            
+////        }
+////            break;
+////            
+////        default:
+////            break;
+////    }
+//    
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

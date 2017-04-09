@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "21991C18BAE0544A57058A9D4CE1CA5F1A2F6735",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "7DF9952B76987F54D66D74171482E11FAF33FDCB" : 0,
+    "21991C18BAE0544A57058A9D4CE1CA5F1A2F6735" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A75756A4-EAC7-44C3-9C42-6E400DE26ED3",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "7DF9952B76987F54D66D74171482E11FAF33FDCB" : "Binder\/Binder\/Classes\/Others\/Lib\/uchardet\/",
+    "21991C18BAE0544A57058A9D4CE1CA5F1A2F6735" : "Binder\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Binder",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Binder.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/992903713\/Bullet.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "21991C18BAE0544A57058A9D4CE1CA5F1A2F6735"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/BYVoid\/uchardet.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "7DF9952B76987F54D66D74171482E11FAF33FDCB"
+    }
+  ]
+}
