@@ -13,27 +13,29 @@
 
 @implementation BookBrowser (CoreDataProperties)
 
-@dynamic data_chapters;
-@dynamic currentPage;
+@dynamic chapters;
+@dynamic currentChapterIndex;
 @dynamic fontSize;
-@dynamic totalPages;
 @dynamic bookFullName;
-
-+ (id)insertNewObjectInContext:(NSManagedObjectContext *)context
+@dynamic bookContentString;
+- (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    return [NSEntityDescription insertNewObjectForEntityForName:@"" inManagedObjectContext:context];
-}
-- (void)encodeWithCoder:(NSCoder *)aCoder;
-{
-    [aCoder encodeObject:self.data_chapters forKey:@"data_chapters"];
+    [aCoder encodeObject:self.chapters forKey:@"chapters"];
+    [aCoder encodeObject:self.currentChapterIndex forKey:@"currentChapterIndex"];
+    [aCoder encodeObject:self.fontSize forKey:@"fontSize"];
+    [aCoder encodeObject:self.bookFullName forKey:@"bookFullName"];
+    [aCoder encodeObject:self.bookContentString forKey:@"bookContentString"];
     
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder{
     if (self = [super init]) {
         
-        self.data_chapters = [aDecoder decodeObjectForKey:@"data_chapters"];
-        
+        self.chapters = [aDecoder decodeObjectForKey:@"chapters"];
+        self.currentChapterIndex = [aDecoder decodeObjectForKey:@"currentChapterIndex"];
+        self.fontSize = [aDecoder decodeObjectForKey:@"fontSize"];
+        self.bookFullName = [aDecoder decodeObjectForKey:@"bookFullName"];
+        self.bookContentString = [aDecoder decodeObjectForKey:@"bookContentString"];
     }
     return self;
 }

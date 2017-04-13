@@ -7,16 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 
-NS_ASSUME_NONNULL_BEGIN
 
-@interface Chapter : NSManagedObject
+@interface Chapter : NSObject<NSCoding>
 
+@property (nonatomic, assign) NSRange allContentRange;
+@property (nonatomic, assign) NSRange contentRange;
+//标题
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, assign) NSRange titleRange;
 // Insert code here to declare functionality of your managed object subclass
-
++ (instancetype)modelWithTitle:(NSString *)title
+                    titleRange:(NSRange )titleRange
+               allContentRange:(NSRange )allContentRange ;
 @end
 
-NS_ASSUME_NONNULL_END
 
-#import "Chapter+CoreDataProperties.h"

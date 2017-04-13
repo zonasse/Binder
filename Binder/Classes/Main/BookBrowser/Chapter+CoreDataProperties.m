@@ -13,26 +13,26 @@
 
 @implementation Chapter (CoreDataProperties)
 
-@dynamic string_allContentRange;
-@dynamic string_contentRange;
-@dynamic string_title;
-@dynamic string_titleRange;
-- (void)encodeWithCoder:(NSCoder *)aCoder;
+@dynamic allContentRange;
+@dynamic contentRange;
+@dynamic title;
+@dynamic titleRange;
+- (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:self.string_title forKey:@"sub_string_title"];
-    [aCoder encodeObject:self.string_contentRange forKey:@"sub_string_contentRange"];
-    [aCoder encodeObject:self.string_allContentRange forKey:@"sub_string_allContentRange"];
-    [aCoder encodeObject:self.string_titleRange forKey:@"sub_string_titleRange"];
+    [aCoder encodeObject:self.title forKey:@"title"];
+    [aCoder encodeObject:self.contentRange forKey:@"contentRange"];
+    [aCoder encodeObject:self.allContentRange forKey:@"allContentRange"];
+    [aCoder encodeObject:self.titleRange forKey:@"titleRange"];
 
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder{
     if (self = [super init]) {
         
-        self.string_title = [aDecoder decodeObjectForKey:@"sub_string_title"];
-        self.string_contentRange = [aDecoder decodeObjectForKey:@"sub_string_contentRange"];
-        self.string_allContentRange = [aDecoder decodeObjectForKey:@"sub_string_allContentRange"];
-        self.string_titleRange = [aDecoder decodeObjectForKey:@"sub_string_titleRange"];
+        self.title = [aDecoder decodeObjectForKey:@"title"];
+        self.contentRange = [aDecoder decodeObjectForKey:@"contentRange"];
+        self.allContentRange = [aDecoder decodeObjectForKey:@"allContentRange"];
+        self.titleRange = [aDecoder decodeObjectForKey:@"titleRange"];
 
     }
     return self;

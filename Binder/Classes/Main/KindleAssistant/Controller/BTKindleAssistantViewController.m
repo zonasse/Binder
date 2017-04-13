@@ -11,7 +11,6 @@
 #import "BTBookLibraryViewController.h"
 #import "MJRefresh.h"
 #import "BTOpenDownloadedBookActionSheet.h"
-#import "BTBookBrowser.h"
 #import "BTBookBrowserViewController.h"
 @interface BTKindleAssistantViewController ()<MFMailComposeViewControllerDelegate,UIAlertViewDelegate,UIDocumentInteractionControllerDelegate,UISearchBarDelegate,UISearchResultsUpdating,BTSearchHistoryViewControllerDelegate,UIActionSheetDelegate,BTBookLibraryViewControllerDelegate>
 
@@ -28,8 +27,6 @@
 @property (nonatomic,strong) BTOpenDownloadedBookActionSheet *actionSheet;
 //书籍详细信息遮盖
 @property (nonatomic,strong) UIView *bookDetailViewCover;
-//书籍浏览器
-@property (nonatomic,strong) BTBookBrowser *bookBrowser;
 
 @end
 
@@ -48,21 +45,20 @@
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.hidesNavigationBarDuringPresentation = YES;
     self.searchController.searchBar.frame = CGRectMake(self.searchController.searchBar.frame.origin.x,self.searchController.searchBar.frame.origin.y,self.searchController.searchBar.frame.size.width,44);
-
+    
     self.searchController.searchBar.delegate = self;
     
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     //2.设置通知项
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(openDownloadedBookWithNotification:) name:@"openDownloadedBook" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(findInAmazon:) name:@"findInAmazon" object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(jumpToBookBrowser) name:@"bookPreparedWorkFinished" object:nil];
     
     //3.设置导航栏左侧按钮
-
+    
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"cellBackground"] forBarMetrics:UIBarMetricsDefault];
     
     
@@ -78,17 +74,17 @@
     [toggleToRight addTarget:self action:@selector(showBooksTag) forControlEvents:UIControlEventTouchUpInside];
     [toggleToRight setImage:[UIImage imageNamed:@"profile_0007_Books"] forState:UIControlStateNormal];
     [toggleToRight setImage:[UIImage imageNamed:@"profile_0007_Books"] forState:UIControlStateHighlighted];
-
+    
     
     UIBarButtonItem *toggleToRightButton = [[UIBarButtonItem alloc] initWithCustomView:toggleToRight];
     self.navigationItem.rightBarButtonItem = toggleToRightButton;
-
+    
     //5.设置搜索历史记录控制器
     self.searchHistoryController = [[BTSearchHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
     self.searchHistoryController.tableView.frame = CGRectMake(0, 44, [UIScreen mainScreen].bounds.size.width, self.view.bounds.size.height);
     self.searchHistoryController.delegate = self;
     
-  
+    
     _indicatorView = [[UIActivityIndicatorView alloc] init];
     _indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     _indicatorView.center = CGPointMake(UIScreenWidth * 0.5, 60);
@@ -96,7 +92,7 @@
     _indicatorView.height = 60;
     _indicatorView.hidesWhenStopped = YES;
     // 6.创建footerView
-
+    
     self.tableView.tableFooterView = nil;
     UIFont *font = [UIFont fontWithName:@"Marker Felt" size:14.0];
     self.normalFooterView = [[UILabel alloc] init];
@@ -110,12 +106,20 @@
     [self loadLocalBooks];
     
     //8.设置电子书打开时显示的actionSheet
-    _actionSheet = [[BTOpenDownloadedBookActionSheet alloc] initWithTitle:@"文件选项" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"预览(txt,pdf)",@"其他应用", nil];
-    BTBook *book = [[BTBook alloc] init];
-    book.title = @"碧血剑";
-    book.suffix = @"txt";
-    BTBookBrowser *bookBrowser = [[BTBookBrowser alloc ]initWithBook:book];
-    _bookBrowser = bookBrowser;
+    //    _actionSheet = [[BTOpenDownloadedBookActionSheet alloc] initWithTitle:@"文件选项" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"预览(txt,pdf)",@"其他应用", nil];
+    //    BTBook *book = [[BTBook alloc] init];
+    //    book.title = @"碧血剑";
+    //    book.suffix = @"txt";
+    
+    //    [MBProgressHUD hideHUD];
+    
+    //    BTBookBrowserViewController *bookBrowserViewController = [[BTBookBrowserViewController alloc] init];
+    //    bookBrowserViewController.book = book;
+    //    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:bookBrowserViewController];
+    //    
+    //    [self presentViewController:navVC animated:YES completion:^{
+    //        
+    //    }];
 }
 
 
@@ -156,24 +160,24 @@
     static NSString *cellId = @"bookCell";
     
     BTKindleBookCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        if (!cell) {
-            cell = [[BTKindleBookCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        }
-
-        if (self.searchController.active) {
-            cell.rowNumber = indexPath.row + 1;
-            BTBook *book = _searchBooks[indexPath.row];
-            //设置cell数据
-            cell.book = book;
-            
-        }else{
-            cell.rowNumber = 0;
-            BTBook *book = _localBooks[indexPath.row];
-            //设置cell数据
-            cell.book = book;
-           
-        }
-
+    if (!cell) {
+        cell = [[BTKindleBookCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    }
+    
+    if (self.searchController.active) {
+        cell.rowNumber = indexPath.row + 1;
+        BTBook *book = _searchBooks[indexPath.row];
+        //设置cell数据
+        cell.book = book;
+        
+    }else{
+        cell.rowNumber = 0;
+        BTBook *book = _localBooks[indexPath.row];
+        //设置cell数据
+        cell.book = book;
+        
+    }
+    
     
     return cell;
 }
@@ -196,46 +200,46 @@
 }
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        return @"删除";
+    return @"删除";
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!self.searchController.active ) {
-
-    BTBook *book = _localBooks[indexPath.row];
-    
-    //本地数据库删除行，本地文件删除
-    FMDatabase *db = [FMDatabase databaseWithPath:[downloadBookPath stringByAppendingPathComponent:@"downloadBook.db"]];
-    if ([db open]) {
-        NSString *deleteQuery = [NSString stringWithFormat:@"DELETE FROM bt_book WHERE bt_bookId = '%@'",book.bookId];
-        if ([db executeUpdate:deleteQuery]) {
-            //删除本地文件和图片缓存
-            if ([[NSFileManager defaultManager] fileExistsAtPath:[downloadBookPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",book.title,book.suffix]]]) {
-                [[NSFileManager defaultManager] removeItemAtPath:[downloadBookPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",book.title,book.suffix]] error:nil];
-                
-                
-                NSString *baseImageURL =[NSString stringWithFormat:@"http://15809m650x.iok.la%@",book.cover];
-                baseImageURL = [baseImageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                [[SDImageCache sharedImageCache]removeImageForKey: baseImageURL fromDisk:YES withCompletion:^{
+        
+        BTBook *book = _localBooks[indexPath.row];
+        
+        //本地数据库删除行，本地文件删除
+        FMDatabase *db = [FMDatabase databaseWithPath:[downloadBookPath stringByAppendingPathComponent:@"downloadBook.db"]];
+        if ([db open]) {
+            NSString *deleteQuery = [NSString stringWithFormat:@"DELETE FROM bt_book WHERE bt_bookId = '%@'",book.bookId];
+            if ([db executeUpdate:deleteQuery]) {
+                //删除本地文件和图片缓存
+                if ([[NSFileManager defaultManager] fileExistsAtPath:[downloadBookPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",book.title,book.suffix]]]) {
+                    [[NSFileManager defaultManager] removeItemAtPath:[downloadBookPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",book.title,book.suffix]] error:nil];
+                    
+                    
+                    NSString *baseImageURL =[NSString stringWithFormat:@"http://15809m650x.iok.la%@",book.cover];
+                    baseImageURL = [baseImageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                    [[SDImageCache sharedImageCache]removeImageForKey: baseImageURL fromDisk:YES withCompletion:^{
+                        [self.localBooks removeObjectAtIndex:indexPath.row];
+                        [tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                        [MBProgressHUD showSuccess:@"删除成功"];
+                        if (self.localBooks.count == 0) {
+                            self.normalFooterView.text = @"本地列表为空";
+                        }
+                    }];
+                    
+                }else{
                     [self.localBooks removeObjectAtIndex:indexPath.row];
                     [tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [MBProgressHUD showSuccess:@"删除成功"];
                     if (self.localBooks.count == 0) {
                         self.normalFooterView.text = @"本地列表为空";
                     }
-                }];
-                
-            }else{
-                [self.localBooks removeObjectAtIndex:indexPath.row];
-                [tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                [MBProgressHUD showSuccess:@"删除成功"];
-                 if (self.localBooks.count == 0) {
-                self.normalFooterView.text = @"本地列表为空";
-                 }
-            }
-        };
-    }
+                }
+            };
+        }
     }
     
 }
@@ -249,10 +253,10 @@
     _bookDetailViewCover.backgroundColor = [UIColor lightGrayColor];
     _bookDetailViewCover.alpha = 0.95;
     [_bookDetailViewCover addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeBookDetailViewCover)]];
-
+    
     
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(10, UIScreenHeight * 0.2, UIScreenWidth - 20, 30) ];
-
+    
     if ([book.category isEqualToString:@""]) {
         textView.text = @"  暂无书籍简介";
     }else{
@@ -262,17 +266,17 @@
     CGSize textSize = [textView.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(textView.width, 2000) lineBreakMode:UILineBreakModeWordWrap];
     
     textView.height = textSize.height + 10;
-//    textView.y -= textSize.height;
+    //    textView.y -= textSize.height;
     textView.editable = NO;
     
-//    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(60, UIScreenHeight - 64, UIScreenWidth - 120, 44)];
-//    closeButton.backgroundColor = [UIColor colorWithRed:237/256.0 green:215/256.0 blue:176/256.0 alpha:1.0];
-//    
-//    [closeButton setTitle:@"确定" forState:UIControlStateNormal];
-//    [closeButton addTarget:self action:@selector(closeBookDetailViewCover) forControlEvents:UIControlEventTouchUpInside];
-//    
+    //    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(60, UIScreenHeight - 64, UIScreenWidth - 120, 44)];
+    //    closeButton.backgroundColor = [UIColor colorWithRed:237/256.0 green:215/256.0 blue:176/256.0 alpha:1.0];
+    //    
+    //    [closeButton setTitle:@"确定" forState:UIControlStateNormal];
+    //    [closeButton addTarget:self action:@selector(closeBookDetailViewCover) forControlEvents:UIControlEventTouchUpInside];
+    //    
     [_bookDetailViewCover addSubview:textView];
-//    [_bookDetailViewCover addSubview:closeButton];
+    //    [_bookDetailViewCover addSubview:closeButton];
     
     [ShareApp.window addSubview:_bookDetailViewCover];
     
@@ -348,13 +352,13 @@
                     if (_normalFooterView) {
                         self.normalFooterView.text = @"暂无搜索结果";
                     }else{
-                    
-                    self.tableView.tableFooterView = nil;
-                    _normalFooterView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, 34)];
-                    _normalFooterView.textColor = [UIColor lightGrayColor];
-                    self.tableView.tableFooterView = self.normalFooterView;
-                    self.normalFooterView.text = @"暂无搜索结果";
-                    self.normalFooterView.textAlignment = NSTextAlignmentCenter;
+                        
+                        self.tableView.tableFooterView = nil;
+                        _normalFooterView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, UIScreenWidth, 34)];
+                        _normalFooterView.textColor = [UIColor lightGrayColor];
+                        self.tableView.tableFooterView = self.normalFooterView;
+                        self.normalFooterView.text = @"暂无搜索结果";
+                        self.normalFooterView.textAlignment = NSTextAlignmentCenter;
                     }
                 }
             }else{
@@ -370,35 +374,35 @@
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (self.searchController.active == YES) {
-                            [_indicatorView stopAnimating];
-
+                        [_indicatorView stopAnimating];
+                        
                         self.tableView.tableFooterView = nil;
-                            if (self.tableView.mj_footer && self.tableView.mj_footer.state == MJRefreshStateRefreshing) {
-                                [self.tableView.mj_footer endRefreshing];
-                            }else{
-                                //上拉加载更多
-                                MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreBooks)];
-                                // 设置文字
-                                [footer setTitle:@"点击或上拉加载更多" forState:MJRefreshStateIdle];
-                                [footer setTitle:@"正在加载" forState:MJRefreshStateRefreshing];
-                                [footer setTitle:@"暂无更多" forState:MJRefreshStateNoMoreData];
-                                
-                                // 设置字体
-                                footer.stateLabel.font = [UIFont systemFontOfSize:12];
-                                
-                                // 设置颜色
-                                footer.stateLabel.textColor = [UIColor lightGrayColor];
-                                
-                                // 设置footer
-                                self.tableView.mj_footer = footer;
-                                
-                                if (_searchBooks.count >0 && _searchBooks.count < 15) {
-                                    [footer endRefreshingWithNoMoreData];
-                                }
-                                
+                        if (self.tableView.mj_footer && self.tableView.mj_footer.state == MJRefreshStateRefreshing) {
+                            [self.tableView.mj_footer endRefreshing];
+                        }else{
+                            //上拉加载更多
+                            MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreBooks)];
+                            // 设置文字
+                            [footer setTitle:@"点击或上拉加载更多" forState:MJRefreshStateIdle];
+                            [footer setTitle:@"正在加载" forState:MJRefreshStateRefreshing];
+                            [footer setTitle:@"暂无更多" forState:MJRefreshStateNoMoreData];
+                            
+                            // 设置字体
+                            footer.stateLabel.font = [UIFont systemFontOfSize:12];
+                            
+                            // 设置颜色
+                            footer.stateLabel.textColor = [UIColor lightGrayColor];
+                            
+                            // 设置footer
+                            self.tableView.mj_footer = footer;
+                            
+                            if (_searchBooks.count >0 && _searchBooks.count < 15) {
+                                [footer endRefreshingWithNoMoreData];
                             }
                             
-                            [self.tableView reloadData];
+                        }
+                        
+                        [self.tableView reloadData];
                     }
                     
                 });
@@ -417,9 +421,9 @@
                 }
                 //网络故障
                 [MBProgressHUD showError:@"网络故障"];
-
+                
             }
-
+            
         }];
     });
     
@@ -437,7 +441,7 @@
     //向私人服务器发送搜索请求
     
     [self searchBooksWithURLAddress:@"http://15809m650x.iok.la/BinderApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
-//        [self searchBooksWithURLAddress:@"http://localhost:8888/www/BulletApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
+    //        [self searchBooksWithURLAddress:@"http://localhost:8888/www/BulletApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
     
 }
 /**
@@ -465,7 +469,7 @@
     //向私人服务器发送搜索请求
     
     [self searchBooksWithURLAddress:@"http://15809m650x.iok.la/BinderApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
-
+    
     
     
     
@@ -561,20 +565,20 @@
         [_indicatorView startAnimating];
         [self.view addSubview:_indicatorView];
     }
-   
+    
     
     
     //请求管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-
+    
     NSString *book = self.searchController.searchBar.text;
     
     //向私人服务器发送搜索请求
     
     [self searchBooksWithURLAddress:@"http://15809m650x.iok.la/BinderApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
-//            [self searchBooksWithURLAddress:@"http://localhost:8888/www/BulletApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
+    //            [self searchBooksWithURLAddress:@"http://localhost:8888/www/BulletApi/searchBooks.php" params:@{@"book":book,@"bookRecord":[NSNumber numberWithInteger:_searchBooks.count]} ];
     
 }
 #pragma mark ------ 本地列表
@@ -615,7 +619,7 @@
         }
     }
     [downloadBookDatabase close];
-
+    
     if (self.tableView.mj_footer) {
         self.tableView.mj_footer = nil;
     }
@@ -636,41 +640,33 @@
 //打开已下载的书籍
 - (void)openDownloadedBookWithNotification:(NSNotification *)notification
 {
-
+    
     BTBook *book = notification.object;
     //打开书籍
     NSString *bookFullName = [book.title stringByAppendingFormat:@".%@",book.suffix];
     NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
-        [MBProgressHUD showMessage:@"正在处理书籍..."];
+        
+        BTBookBrowserViewController *bookBrowserViewController = [[BTBookBrowserViewController alloc] init];
+        bookBrowserViewController.book = book;
+        UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:bookBrowserViewController];
+        
+        [self presentViewController:navVC animated:YES completion:^{
+            
+        }];
         
         
-        _bookBrowser = [[BTBookBrowser alloc ]init];
-        _bookBrowser.book = book;
-
         
         
         
     }
-
-//    [_actionSheet showInView:self.view];
-//    _actionSheet.book = book;
+    
+    //    [_actionSheet showInView:self.view];
+    //    _actionSheet.book = book;
 }
 
-- (void)jumpToBookBrowser
-{
-    //    [MBProgressHUD hideHUD];
-    
-    BTBookBrowserViewController *bookBrowserViewController = [[BTBookBrowserViewController alloc] init];
-        bookBrowserViewController.browser = _bookBrowser;
-    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:bookBrowserViewController];
 
-    [self presentViewController:navVC animated:YES completion:^{
-        
-    }];
-    
-}
 
 /**
  *  打开书籍ActionSheet的代理方法
@@ -743,8 +739,8 @@
 - (void)showBooksTag
 {
     
-        
-
+    
+    
     BTBookLibraryViewController *bookLibraryVC = [[BTBookLibraryViewController alloc] init];
     UINavigationController *bookLibraryNAV = [[UINavigationController alloc ]initWithRootViewController:bookLibraryVC];
     bookLibraryVC.delegate = self;
@@ -753,7 +749,7 @@
     }];
     
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"openDownloadedBook" object:nil];
-
+    
     
     
     

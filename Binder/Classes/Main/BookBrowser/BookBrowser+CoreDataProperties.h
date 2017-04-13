@@ -15,11 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BookBrowser (CoreDataProperties)<NSCoding>
 
-@property (nullable, nonatomic, retain) NSData *data_chapters;
-@property (nullable, nonatomic, retain) NSNumber *currentPage;
+@property (nullable, nonatomic, retain) NSData *chapters;
+@property (nullable, nonatomic, retain) NSNumber *currentChapterIndex;
 @property (nullable, nonatomic, retain) NSNumber *fontSize;
-@property (nullable, nonatomic, retain) NSNumber *totalPages;
 @property (nullable,nonatomic,copy) NSString *bookFullName;
+@property (nullable,nonatomic,copy) NSString *bookContentString;
+
 @end
 
 NS_ASSUME_NONNULL_END

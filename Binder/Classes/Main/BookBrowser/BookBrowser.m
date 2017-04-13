@@ -7,13 +7,7 @@
 //
 
 #import "BookBrowser.h"
-#import "Chapter.h"
-
-
 
 @implementation BookBrowser
-
-
-
 
 @end

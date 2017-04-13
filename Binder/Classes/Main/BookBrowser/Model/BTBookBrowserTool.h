@@ -11,6 +11,10 @@
 @interface BTBookBrowserTool : NSObject
 @property (nonatomic,strong) NSManagedObjectContext *managedContext;
 - (void)createCoreDataContent;
-- (void)insertBrowserDataWithChapters:(NSArray *)chapters currentPage:(NSNumber *)currentPage totalPages:(NSNumber *)totalPages bookFullName:(NSString *)bookFullName;
-- (void)readDataWithBookFullName:(NSString *)bookFullName;
+
+- (void)checkLocalCoreDataWithBookFullName:(NSString *)bookFullName;
+- (void)modifyDataWithBookFullName:(NSString *)bookFullName currentChapterIndex:(NSNumber*)currentChapterIndex fontSize:(NSNumber*)fontSize;
+
+
+
 @end

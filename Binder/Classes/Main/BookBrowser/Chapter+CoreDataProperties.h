@@ -13,13 +13,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Chapter (CoreDataProperties)<NSCoding>
+@interface Chapter (CoreDataProperties)
 
-@property (nullable, nonatomic, retain) NSString *string_allContentRange;
-@property (nullable, nonatomic, retain) NSString *string_contentRange;
+@property (nullable, nonatomic, retain) NSString *allContentRange;
+@property (nullable, nonatomic, retain) NSString *contentRange;
 //标题
-@property (nullable, nonatomic, retain) NSString *string_title;
-@property (nullable, nonatomic, retain) NSString *string_titleRange;
+@property (nullable, nonatomic, retain) NSString *title;
+@property (nullable, nonatomic, retain) NSString *titleRange;
 
 @end
 

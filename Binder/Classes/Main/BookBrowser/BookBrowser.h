@@ -10,7 +10,6 @@
 #import <CoreData/CoreData.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class BTBook;
 
 @interface BookBrowser : NSManagedObject
 // Insert code here to declare functionality of your managed object subclass

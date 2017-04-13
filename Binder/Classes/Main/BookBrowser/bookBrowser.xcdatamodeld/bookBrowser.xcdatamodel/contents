@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15G1421" minimumToolsVersion="Xcode 7.0">
     <entity name="BookBrowser" representedClassName="BookBrowser" syncable="YES">
+        <attribute name="bookContentString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="bookFullName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="currentPage" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="data_chapters" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="chapters" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="currentChapterIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="fontSize" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="totalPages" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-    </entity>
-    <entity name="Chapter" representedClassName="Chapter" syncable="YES">
-        <attribute name="string_allContentRange" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="string_contentRange" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="string_title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="string_titleRange" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="BookBrowser" positionX="-63" positionY="-18" width="128" height="120"/>
-        <element name="Chapter" positionX="-54" positionY="-9" width="128" height="105"/>
     </elements>
 </model>
