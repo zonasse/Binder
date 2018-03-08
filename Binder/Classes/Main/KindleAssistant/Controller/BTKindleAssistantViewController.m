@@ -106,20 +106,20 @@
     [self loadLocalBooks];
     
     //8.设置电子书打开时显示的actionSheet
-    //    _actionSheet = [[BTOpenDownloadedBookActionSheet alloc] initWithTitle:@"文件选项" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"预览(txt,pdf)",@"其他应用", nil];
-    //    BTBook *book = [[BTBook alloc] init];
-    //    book.title = @"碧血剑";
-    //    book.suffix = @"txt";
-    
-    //    [MBProgressHUD hideHUD];
-    
-    //    BTBookBrowserViewController *bookBrowserViewController = [[BTBookBrowserViewController alloc] init];
-    //    bookBrowserViewController.book = book;
-    //    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:bookBrowserViewController];
-    //    
-    //    [self presentViewController:navVC animated:YES completion:^{
-    //        
-    //    }];
+//        _actionSheet = [[BTOpenDownloadedBookActionSheet alloc] initWithTitle:@"文件选项" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"预览(txt,pdf)",@"其他应用", nil];
+//        BTBook *book = [[BTBook alloc] init];
+//        book.title = @"碧血剑";
+//        book.suffix = @"txt";
+//    
+//        [MBProgressHUD hideHUD];
+//    
+//        BTBookBrowserViewController *bookBrowserViewController = [[BTBookBrowserViewController alloc] init];
+//        bookBrowserViewController.book = book;
+//        UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:bookBrowserViewController];
+//        
+//        [self presentViewController:navVC animated:YES completion:^{
+//            
+//        }];
 }
 
 
@@ -646,8 +646,8 @@
     NSString *bookFullName = [book.title stringByAppendingFormat:@".%@",book.suffix];
     NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
-        
+    //if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
+    if([book.suffix isEqualToString:@"txt"]){
         BTBookBrowserViewController *bookBrowserViewController = [[BTBookBrowserViewController alloc] init];
         bookBrowserViewController.book = book;
         UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:bookBrowserViewController];
@@ -655,15 +655,28 @@
         [self presentViewController:navVC animated:YES completion:^{
             
         }];
+    }else if([book.suffix isEqualToString:@"pdf"]){
+//            [_actionSheet showInView:self.view];
+//            _actionSheet.book = book;
+
+        _documentInteration = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+        _documentInteration.delegate = self;
+
+        //预览
+        [_documentInteration presentPreviewAnimated:YES];
         
-        
-        
-        
-        
+    }else{
+        [MBProgressHUD showError:@"暂不支持此格式"];
     }
+
+        
+        
+        
+        
+        
+    //}
     
-    //    [_actionSheet showInView:self.view];
-    //    _actionSheet.book = book;
+
 }
 
 
@@ -671,46 +684,53 @@
 /**
  *  打开书籍ActionSheet的代理方法
  */
-//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    
-//    NSString *bookFullName = [_actionSheet.book.title stringByAppendingFormat:@".%@",_actionSheet.book.suffix];
-//    NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
-//    
-//    if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
-//        _documentInteration = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
-//        _documentInteration.delegate = self;
-//    
-//    }
-//    switch (buttonIndex) {
-//
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    NSString *bookFullName = [_actionSheet.book.title stringByAppendingFormat:@".%@",_actionSheet.book.suffix];
+    NSString *path = [downloadBookPath stringByAppendingPathComponent:bookFullName];
+    
+    //if ([[NSFileManager defaultManager] fileExistsAtPath:path] && _actionSheet.book.bookStatus == btBookStatusDownloaded) {
+        _documentInteration = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+        _documentInteration.delegate = self;
+    
+    //}
+    ///switch (buttonIndex) {
+
 //        case 0:
 //        {
-//             //预览
-//            [_documentInteration presentPreviewAnimated:YES];
+             //预览
+            [_documentInteration presentPreviewAnimated:YES];
 //        }
 //            break;
 //        case 1:
 //        {
-//            //其他应用
+            //其他应用
 //            [_documentInteration presentOpenInMenuFromRect:self.view.bounds inView:self.view animated:YES];
-//            
-//            
-//            
+    
+            
+            
 //        }
 //            break;
 //
 //        default:
 //            break;
 //    }
-//    
-//}
+    
+}
 
-//- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
-//{
-//    return self;
-//}
-
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
+{
+    return self;
+}
+- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller
+{
+    return self.view;
+}
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller
+{
+    return self.view.frame;
+}
 /**
  *  亚马逊按钮点击
  */
